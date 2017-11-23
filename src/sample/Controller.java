@@ -30,20 +30,40 @@ public class Controller {
         Platform.exit();
     }
 
-    public void initialize(){
+    public float getSize(){
+        float size;
+        if(brushSize.getText().equals("")) {
+            size = 5;
+            brushSize.setText("5");
+        }else {
+            size = Float.parseFloat(brushSize.getText());
+        }
+        return size;
+    }
+
+    public void draw(){
         GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
 
-        canvas.setOnMouseDragged(event -> {
-            double size = Double.parseDouble(brushSize.getText());
-            double x = event.getX()-size/2;
-            double y = event.getY()-size/2;
-            if(eraser.isSelected()){
-                graphicsContext.clearRect(x , y  , size, size);
-            }else {
-                graphicsContext.setFill(colorPicker.getValue());
-                graphicsContext.fillRoundRect(x,y,size,size,size,size);
-                
-            }
+        canvas.setOnMousePressed(event -> {
+            graphicsContext.setLineWidth(getSize());
+            double x = event.getX();
+            double y = event.getY();
+            graphicsContext.setStroke(colorPicker.getValue());
+            graphicsContext.beginPath();
+            graphicsContext.lineTo(x , y);
+            graphicsContext.stroke();
         });
+
+        canvas.setOnMouseDragged(event -> {
+            graphicsContext.setLineWidth(getSize());
+            double x = event.getX();
+            double y = event.getY();
+            graphicsContext.lineTo(x , y);
+            graphicsContext.stroke();
+        });
+    }
+
+    public void initialize(){
+        draw();
     }
 }
