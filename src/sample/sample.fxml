@@ -1,47 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
-   <center>
-      <Canvas fx:id="canvas" height="527.0" width="602.0" />
-   </center>
-   <top>
-      <VBox fx:id="VBox">
-         <children>
-            <ToolBar fx:id="ToolBar">
-                <items>
-                  <HBox alignment="CENTER" spacing="5" />
-                    <TextField fx:id="brushSize" text="18" />
-                    <ColorPicker fx:id="colorPicker" />
-                    <CheckBox fx:id="eraser" />
-               </items>
-            </ToolBar>
-            <MenuBar fx:id="MenuBar">
-              <menus>
-                <Menu text="File">
-                  <items>
-                    <MenuItem onAction="#onExit" text="Exit" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Help">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="About" />
-                  </items>
-                </Menu>
-              </menus>
-            </MenuBar>
-         </children>
-      </VBox>
-   </top>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+    <center>
+        <Canvas fx:id="canvas" height="631.0" onMouseClicked="#getSize" width="1024.0">
+            <cursor>
+                <Cursor fx:constant="CROSSHAIR" />
+            </cursor></Canvas>
+    </center>
+    <top>
+        <VBox fx:id="VBox">
+            <children>
+                <MenuBar fx:id="MenuBar">
+                    <menus>
+                        <Menu text="File">
+                            <items>
+                                <MenuItem onAction="#onExit" text="Exit" />
+                            </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Help">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="About" />
+                            </items>
+                        </Menu>
+                    </menus>
+                </MenuBar>
+                <ToolBar prefHeight="103.0" prefWidth="601.0">
+                    <items>
+                        <HBox alignment="CENTER" prefHeight="6.0" prefWidth="1.0" spacing="5" />
+                        <Slider fx:id="brushSize" min="1.0" onMouseClicked="#getSize" onMouseDragged="#getSize" onMousePressed="#getSize" onMouseReleased="#getSize" onScroll="#getSize" value="15.0" />
+                        <Canvas fx:id="CanvasExample" height="105.0" width="105.0" />
+                        <Label fx:id="brushSizeLabel" text="15" />
+                        <ColorPicker fx:id="colorPicker" editable="true" onAction="#setColor" />
+                        <CheckBox fx:id="eraser" />
+                    </items>
+                </ToolBar>
+            </children>
+        </VBox>
+    </top>
 </BorderPane>
