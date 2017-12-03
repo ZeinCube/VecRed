@@ -42,8 +42,8 @@
                     <items>
                         <HBox alignment="CENTER" prefHeight="6.0" prefWidth="1.0" spacing="5" />
                         <Slider fx:id="brushSize" min="1.0" onMouseClicked="#getSize" onMouseDragged="#getSize" onMousePressed="#getSize" onMouseReleased="#getSize" onScroll="#getSize" value="15.0" />
-                        <Canvas fx:id="CanvasExample" height="105.0" width="105.0" />
                         <Label fx:id="brushSizeLabel" text="15" />
+                        <Canvas fx:id="CanvasExample" height="105.0" width="105.0" />
                         <ColorPicker fx:id="colorPicker" editable="true" onAction="#setColor" />
                         <CheckBox fx:id="eraser" />
                     </items>
