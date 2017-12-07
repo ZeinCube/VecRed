@@ -1,26 +1,35 @@
-package Tools;
+package Figures;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Paint;
 
-public class Line {
-    double size;
+public class Line extends Figure{
+    private double size;
 
-    public Line(double size , double x0, double y0, double x1, double y1, GraphicsContext graphicsContext) {
+    public Line(double startingX, double startingY, double endX, double endY, GraphicsContext graphicsContext , double size , Paint color) {
+        super(startingX,startingY,endX,endY ,graphicsContext , color);
+        this.size = size;
+        this.color = color;
+        draw();
+    }
+
+    public void draw(){
         //Изменения координат
-        double dx = (x1 > x0) ? (x1 - x0) : (x0 - x1);
-        double dy = (y1 > y0) ? (y1 - y0) : (y0 - y1);
+        graphicsContext.setFill(color);
+        double dx = (endX > startingX) ? (endX - startingX) : (startingX - endX);
+        double dy = (endY > startingY) ? (endY - startingY) : (startingY - endY);
         //Направление приращения
-        int sx = (x1 >= x0) ? (1) : (-1);
-        int sy = (y1 >= y0) ? (1) : (-1);
+        int sx = (endX >= startingX) ? (1) : (-1);
+        int sy = (endY >= startingY) ? (1) : (-1);
 
         if (dy < dx)
         {
             double d = ((int)dy << 1) - dx;
             double d1 = (int)dy << 1;
             double d2 = (int)(dy - dx) << 1;
-            graphicsContext.fillRoundRect(x0, y0, size, size, size, size);
-            double x = x0 + sx;
-            double y = y0;
+            graphicsContext.fillRoundRect(startingX, startingY, size, size, size, size);
+            double x = startingX + sx;
+            double y = startingY;
             for (int i = 1; i <= dx; i++)
             {
                 if (d > 0)
@@ -39,9 +48,9 @@ public class Line {
             double d =  ((int)dx << 1) - dy;
             double d1 = (int) dx << 1;
             double d2 = (int) (dx - dy) << 1;
-            graphicsContext.fillRoundRect(x0, y0, size, size, size, size);
-            double x = x0;
-            double y = y0 + sy;
+            graphicsContext.fillRoundRect(startingX, startingY, size, size, size, size);
+            double x = startingX;
+            double y = startingY + sy;
             for (int i = 1; i <= dy; i++)
             {
                 if (d > 0)
@@ -56,4 +65,5 @@ public class Line {
             }
         }
     }
+
 }

@@ -1,17 +1,31 @@
 package sample;
 
-import Tools.Line;
+import Figures.Figure;
+import Tools.*;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 
 public class Controller {
+    @FXML
+    public BorderPane borderPane;
 
+    @FXML
+    public ComboBox toolBox;
+
+    @FXML
     private GraphicsContext exampleBrush;
 
     @FXML
@@ -19,8 +33,6 @@ public class Controller {
 
     @FXML
     private Label brushSizeLabel;
-
-    private int size;
 
     @FXML
     private MenuBar menuBar;
@@ -34,12 +46,25 @@ public class Controller {
     @FXML
     private Slider brushSize;
 
-    @FXML
-    private CheckBox eraser;
+    public static List<Figure> figures = new LinkedList<>();
+    private GraphicsContext graphicsContext;
 
-    private double x, y, x0, y0;
+    private ObservableList<String> tools = FXCollections.observableArrayList(
+            "Pen",
+            "Oval",
+            "Eraser",
+            "Rectangle"
+    );
 
-    public void onExit(ActionEvent actionEvent) {
+    private Tool pen;
+    private Tool oval;
+    private Tool eraser;
+    private Tool rectTool;
+    private Tool currentTool;
+    public static int size;
+    public static List<Tool> toolsList = new ArrayList<>();
+
+    public void onExit() {
         Platform.exit();
     }
 
@@ -48,47 +73,87 @@ public class Controller {
         brushSizeLabel.setText(String.valueOf(size));
         exampleBrush.clearRect(0, 0,105, 105);
         exampleBrush.fillRoundRect(52-size/2, 52-size/2, size,size,size, size);
-    }
-
-    private void draw() {
-        GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
-        exampleBrush = CanvasExample.getGraphicsContext2D();
-
-        canvas.setOnMousePressed(event -> {
-            double x = event.getX()-size/2;
-            double y = event.getY()-size/2;
-            x0 = x;
-            y0 = y;
-            if(eraser.isSelected()){
-                graphicsContext.clearRect(x, y ,size, size);
-            }else {
-                graphicsContext.fillRoundRect(x, y, size, size, size, size);
-            }
-        });
-
-        canvas.setOnMouseDragged(event -> {
-            x = (int) (event.getX()-size/2);
-            y = event.getY()-size/2;
-
-            if(eraser.isSelected()){
-                graphicsContext.clearRect(x, y ,size, size);
-            }else {
-                new Line(size,x, y, x0, y0,graphicsContext);
-                x0 = x;
-                y0 = y;
-            }
-        });
+        for (Tool tool : toolsList){
+            tool.setSize(size);
+        }
     }
 
     public void initialize(){
+        getGraphCont();
         colorPicker.setValue(Color.BLACK);
-        draw();
+        toolBox.setItems(tools);
+        toolBox.setValue("Pen");
+        pen = new Pen(canvas);
+        oval = new OvalTool(canvas);
+        eraser = new Eraser(canvas,15);
+        rectTool  = new RectTool(canvas);
+        toolSelect();
+        toolsList.add(pen);
+        toolsList.add(oval);
+        toolsList.add(eraser);
+        toolsList.add(rectTool);
+        toolsList.add(currentTool);
+        getSize();
+        setColor();
+        canvas.toBack();
+    }
+
+    private void getGraphCont(){
+        graphicsContext = canvas.getGraphicsContext2D();
+        exampleBrush = CanvasExample.getGraphicsContext2D();
+    }
+
+    public void setColor() {
+        canvas.getGraphicsContext2D().setFill(colorPicker.getValue());
+        canvas.getGraphicsContext2D().setStroke(colorPicker.getValue());
+        exampleBrush.setFill(colorPicker.getValue());
+        for (Tool tool : toolsList){
+            tool.setColor(colorPicker.getValue());
+        }
         getSize();
     }
 
-    public void setColor(ActionEvent actionEvent) {
-        canvas.getGraphicsContext2D().setFill(colorPicker.getValue());
-        exampleBrush.setFill(colorPicker.getValue());
-        getSize();
+    public void toolSelect() {
+        switch ((String) toolBox.getValue()){
+            case "Pen" :
+                oval.setSize(size);
+                oval.setColor(colorPicker.getValue());
+                currentTool = pen;
+                break;
+            case "Oval" :
+                oval.setColor(colorPicker.getValue());
+                currentTool = oval;
+                break;
+            case "Eraser":
+                eraser.setSize(size);
+                currentTool = eraser;
+                break;
+            case "Rectangle":
+                rectTool.setColor(colorPicker.getValue());
+                currentTool = rectTool;
+                break;
+        }
+    }
+
+    public static void repaintCanvas(){
+        for(Figure figure : figures){
+            figure.draw();
+        }
+    }
+
+    public static void addFigure(Figure figure){
+        figures.add(figure);
+    }
+
+    public void canvasOnMousePressed(MouseEvent event) {
+        currentTool.getOnMousePressed(event);
+    }
+
+    public void canvasOnMouseDragged(MouseEvent event) {
+        currentTool.getOnMouseDragged(event);
+    }
+
+    public void canvasOnMouseReleased(MouseEvent event) {
+        currentTool.getOnMouseReleased(event);
     }
 }
