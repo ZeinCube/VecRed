@@ -7,7 +7,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Paint;
 
 public abstract class Tool {
-    double x, y, x0, y0 , size,width,height;
+    double x, y, x0, y0 , size;
     Canvas canvas;
     GraphicsContext graphicsContext;
     Paint color;
@@ -24,5 +24,5 @@ public abstract class Tool {
     public void setSize(double size){
         this.size = size;
     }
-    public void setColor(Paint color) {this.color = color;}
+    public void setColor(Paint color){this.color = color;}
 }

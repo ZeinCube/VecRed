@@ -5,17 +5,19 @@ import javafx.scene.paint.Paint;
 
 public abstract class Figure {
     double startingX,startingY,endX,endY;
-    GraphicsContext graphicsContext;
     Paint color;
+    double size;
+    public static GraphicsContext graphicsContext;
 
-    public Figure(double startingX, double startingY, double endX, double endY , GraphicsContext graphicsContext , Paint color) {
+    public Figure(double startingX, double startingY, double endX, double endY , double size, Paint color) {
         this.startingX = startingX;
         this.startingY = startingY;
         this.endX = endX;
         this.endY = endY;
-        this.graphicsContext = graphicsContext;
+        this.size = size;
         this.color = color;
+        draw(graphicsContext);
     }
 
-    public abstract void draw();
+    public abstract void draw(GraphicsContext graphicsContext);
 }

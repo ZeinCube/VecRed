@@ -22,17 +22,12 @@ public class RectTool extends Tool{
     public void getOnMouseDragged(MouseEvent event) {
         graphicsContext.clearRect(0,0,1920,1080);
         Controller.repaintCanvas();
-        x = Math.min(x0,event.getX());
-        y = Math.min(y0,event.getY());
-        width = Math.abs(event.getX() - x0);
-        height = Math.abs(event.getY() - y0);
-        graphicsContext.setStroke(color);
-        graphicsContext.strokeRect(x,y,width,height);
+        new Rect(x0,y0, event.getX(), event.getY(), size,color);
     }
 
     @Override
     public void getOnMouseReleased(MouseEvent event) {
         Controller.repaintCanvas();
-        Controller.addFigure(new Rect(x0,y0, event.getX(), event.getY() ,graphicsContext , color));
+        Controller.addFigure(new Rect(x0,y0, event.getX(), event.getY(), size,color));
     }
 }

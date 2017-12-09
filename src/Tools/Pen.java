@@ -17,7 +17,7 @@ public class Pen extends Tool {
     }
 
     private void newLine(double size, double x0, double y0, double x1, double y1){
-        Controller.figures.add(new Line(x0,y0,x1,y1,graphicsContext,size, color));
+        Controller.figures.add(new Line(x0,y0,x1,y1,size,color));
     }
 
     @Override
@@ -26,8 +26,7 @@ public class Pen extends Tool {
         y = event.getY()-size/2;
         x0 = x;
         y0 = y;
-        Controller.figures.add(new Line(x,y,x,y,graphicsContext,size, color));
-        graphicsContext.fillRoundRect(x, y, size, size, size, size);
+        newLine(size,x,y,x,y);
     }
 
     @Override

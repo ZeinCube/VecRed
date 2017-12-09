@@ -5,15 +5,17 @@ import javafx.scene.paint.Paint;
 
 public class Oval extends Figure {
 
-    public Oval(double startingX, double startingY, double endX, double endY, GraphicsContext graphicsContext , Paint color) {
-        super(startingX, startingY, endX, endY, graphicsContext, color);
-        draw();
+    public Oval(double startingX, double startingY, double endX, double endY, double size, Paint color) {
+        super(startingX,startingY,endX,endY, size,color);
+        draw(graphicsContext);
     }
 
     @Override
-    public void draw() {
-        graphicsContext.setStroke(color);
+    public void draw(GraphicsContext graphicsContext) {
         graphicsContext.setFill(color);
+        graphicsContext.setStroke(color);
+        System.out.println("Oval drawing " + color.toString());
+        graphicsContext.setLineWidth(size);
         graphicsContext.strokeOval(Math.min(startingX,endX),Math.min(startingY,endY),Math.abs(startingX-endX),Math.abs(startingY-endY));
     }
 }

@@ -13,7 +13,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -52,17 +51,14 @@ public class Controller {
     private ObservableList<String> tools = FXCollections.observableArrayList(
             "Pen",
             "Oval",
-            "Eraser",
             "Rectangle"
     );
 
     private Tool pen;
     private Tool oval;
-    private Tool eraser;
     private Tool rectTool;
     private Tool currentTool;
     public static int size;
-    public static List<Tool> toolsList = new ArrayList<>();
 
     public void onExit() {
         Platform.exit();
@@ -73,9 +69,7 @@ public class Controller {
         brushSizeLabel.setText(String.valueOf(size));
         exampleBrush.clearRect(0, 0,105, 105);
         exampleBrush.fillRoundRect(52-size/2, 52-size/2, size,size,size, size);
-        for (Tool tool : toolsList){
-            tool.setSize(size);
-        }
+        currentTool.setSize(size);
     }
 
     public void initialize(){
@@ -85,51 +79,42 @@ public class Controller {
         toolBox.setValue("Pen");
         pen = new Pen(canvas);
         oval = new OvalTool(canvas);
-        eraser = new Eraser(canvas,15);
         rectTool  = new RectTool(canvas);
         toolSelect();
-        toolsList.add(pen);
-        toolsList.add(oval);
-        toolsList.add(eraser);
-        toolsList.add(rectTool);
-        toolsList.add(currentTool);
         getSize();
         setColor();
         canvas.toBack();
     }
 
     private void getGraphCont(){
+        Figure.graphicsContext = canvas.getGraphicsContext2D();
         graphicsContext = canvas.getGraphicsContext2D();
         exampleBrush = CanvasExample.getGraphicsContext2D();
     }
 
     public void setColor() {
+        currentTool.setColor(colorPicker.getValue());
         canvas.getGraphicsContext2D().setFill(colorPicker.getValue());
         canvas.getGraphicsContext2D().setStroke(colorPicker.getValue());
         exampleBrush.setFill(colorPicker.getValue());
-        for (Tool tool : toolsList){
-            tool.setColor(colorPicker.getValue());
-        }
         getSize();
     }
 
     public void toolSelect() {
         switch ((String) toolBox.getValue()){
             case "Pen" :
-                oval.setSize(size);
-                oval.setColor(colorPicker.getValue());
+                pen.setColor(colorPicker.getValue());
+                pen.setSize(size);
                 currentTool = pen;
                 break;
             case "Oval" :
                 oval.setColor(colorPicker.getValue());
+                oval.setSize(size);
                 currentTool = oval;
-                break;
-            case "Eraser":
-                eraser.setSize(size);
-                currentTool = eraser;
                 break;
             case "Rectangle":
                 rectTool.setColor(colorPicker.getValue());
+                rectTool.setSize(size);
                 currentTool = rectTool;
                 break;
         }
@@ -137,7 +122,7 @@ public class Controller {
 
     public static void repaintCanvas(){
         for(Figure figure : figures){
-            figure.draw();
+            figure.draw(Figure.graphicsContext);
         }
     }
 
