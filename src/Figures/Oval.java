@@ -14,7 +14,6 @@ public class Oval extends Figure {
     public void draw(GraphicsContext graphicsContext) {
         graphicsContext.setFill(color);
         graphicsContext.setStroke(color);
-        System.out.println("Oval drawing " + color.toString());
         graphicsContext.setLineWidth(size);
         graphicsContext.strokeOval(Math.min(startingX,endX),Math.min(startingY,endY),Math.abs(startingX-endX),Math.abs(startingY-endY));
     }

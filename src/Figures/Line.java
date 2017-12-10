@@ -2,6 +2,7 @@ package Figures;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.StrokeLineCap;
 
 public class Line extends Figure{
 
@@ -11,57 +12,16 @@ public class Line extends Figure{
     }
 
     public void draw(GraphicsContext graphicsContext){
-        graphicsContext.setFill(color);
-        //Изменения координат
-        graphicsContext.setFill(color);
-        double dx = (endX > startingX) ? (endX - startingX) : (startingX - endX);
-        double dy = (endY > startingY) ? (endY - startingY) : (startingY - endY);
-        //Направление приращения
-        int sx = (endX >= startingX) ? (1) : (-1);
-        int sy = (endY >= startingY) ? (1) : (-1);
-
-        if (dy < dx)
-        {
-            double d = ((int)dy << 1) - dx;
-            double d1 = (int)dy << 1;
-            double d2 = (int)(dy - dx) << 1;
-            graphicsContext.fillRoundRect(startingX, startingY, size, size, size, size);
-            double x = startingX + sx;
-            double y = startingY;
-            for (int i = 1; i <= dx; i++)
-            {
-                if (d > 0)
-                {
-                    d += d2;
-                    y += sy;
-                }
-                else
-                    d += d1;
-                graphicsContext.fillRoundRect(x, y, size, size, size, size);
-                x+=sx;
-            }
-        }
-        else
-        {
-            double d =  ((int)dx << 1) - dy;
-            double d1 = (int) dx << 1;
-            double d2 = (int) (dx - dy) << 1;
-            graphicsContext.fillRoundRect(startingX, startingY, size, size, size, size);
-            double x = startingX;
-            double y = startingY + sy;
-            for (int i = 1; i <= dy; i++)
-            {
-                if (d > 0)
-                {
-                    d += d2;
-                    x += sx;
-                }
-                else
-                    d += d1;
-                graphicsContext.fillRoundRect(x, y, size, size, size, size);
-                y+=sy;
-            }
-        }
+        double[] x = new double[]{
+                startingX+size/2,endX+size/2
+        };
+        double[] y = new double[]{
+                startingY+size/2,endY+size/2
+        };
+        graphicsContext.setStroke(color);
+        graphicsContext.setLineWidth(size);
+        graphicsContext.setLineCap(StrokeLineCap.ROUND);
+        graphicsContext.strokePolyline(x,y,2);
     }
 
 }
