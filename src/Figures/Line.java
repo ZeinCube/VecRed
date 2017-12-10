@@ -22,6 +22,7 @@ public class Line extends Figure{
         graphicsContext.setLineWidth(size);
         graphicsContext.setLineCap(StrokeLineCap.ROUND);
         graphicsContext.strokePolyline(x,y,2);
+
     }
 
 }
