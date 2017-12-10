@@ -3,6 +3,7 @@ package Tools;
 import Figures.PolyLine;
 import javafx.scene.canvas.Canvas;
 
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import sample.Controller;
 
@@ -11,6 +12,10 @@ public class Pen extends Tool {
     public Pen(Canvas canvas) {
         super(canvas);
         this.graphicsContext = canvas.getGraphicsContext2D();
+        button = new Button();
+        button.setPrefHeight(70);
+        button.setPrefWidth(75);
+        button.setText("Pen");
     }
 
     private void newLine(double size, double x0, double y0, double x1, double y1){

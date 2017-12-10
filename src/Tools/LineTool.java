@@ -2,6 +2,7 @@ package Tools;
 
 import Figures.Line;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import sample.Controller;
 
@@ -9,6 +10,10 @@ public class LineTool extends Tool {
     public LineTool(Canvas canvas) {
         super(canvas);
         graphicsContext = canvas.getGraphicsContext2D();
+        button = new Button();
+        button.setPrefHeight(70);
+        button.setPrefWidth(75);
+        button.setText("Line");
     }
 
     @Override

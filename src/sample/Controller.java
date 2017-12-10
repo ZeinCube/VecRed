@@ -3,8 +3,6 @@ package sample;
 import Figures.Figure;
 import Tools.*;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -13,6 +11,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,9 +19,6 @@ import java.util.List;
 public class Controller {
     @FXML
     public BorderPane borderPane;
-
-    @FXML
-    public ComboBox toolBox;
 
     @FXML
     private GraphicsContext exampleBrush;
@@ -40,6 +36,9 @@ public class Controller {
     private Canvas canvas;
 
     @FXML
+    private ToolBar toolBar;
+
+    @FXML
     private ColorPicker colorPicker;
 
     @FXML
@@ -47,18 +46,8 @@ public class Controller {
 
     public static List<Figure> figures = new LinkedList<>();
     private GraphicsContext graphicsContext;
+    public static List<Tool> toolList = new ArrayList<>();
 
-    private ObservableList<String> tools = FXCollections.observableArrayList(
-            "Pen",
-            "Oval",
-            "Rectangle",
-            "Line"
-    );
-
-    private Tool pen;
-    private Tool oval;
-    private Tool rectTool;
-    private Tool lineTool;
     private Tool currentTool;
     public static int size;
 
@@ -77,16 +66,25 @@ public class Controller {
     public void initialize(){
         getGraphCont();
         colorPicker.setValue(Color.BLACK);
-        toolBox.setItems(tools);
-        toolBox.setValue("Pen");
-        pen = new Pen(canvas);
-        oval = new OvalTool(canvas);
-        rectTool  = new RectTool(canvas);
-        lineTool = new LineTool(canvas);
-        toolSelect();
+        currentTool = new Pen(canvas);
+        new OvalTool(canvas);
+        new RectTool(canvas);
+        new LineTool(canvas);
+        drawToolBut();
         getSize();
         setColor();
         canvas.toBack();
+    }
+
+    private void drawToolBut(){
+        for (Tool tool : toolList){
+            tool.button.setOnMouseClicked((MouseEvent event) -> {
+                currentTool = tool;
+                currentTool.setSize(size);
+                currentTool.setColor(colorPicker.getValue());
+            });
+            toolBar.getItems().add(tool.button);
+        }
     }
 
     private void getGraphCont(){
@@ -101,31 +99,6 @@ public class Controller {
         canvas.getGraphicsContext2D().setStroke(colorPicker.getValue());
         exampleBrush.setFill(colorPicker.getValue());
         getSize();
-    }
-
-    public void toolSelect() {
-        switch ((String) toolBox.getValue()){
-            case "Pen" :
-                pen.setColor(colorPicker.getValue());
-                pen.setSize(size);
-                currentTool = pen;
-                break;
-            case "Oval" :
-                oval.setColor(colorPicker.getValue());
-                oval.setSize(size);
-                currentTool = oval;
-                break;
-            case "Rectangle":
-                rectTool.setColor(colorPicker.getValue());
-                rectTool.setSize(size);
-                currentTool = rectTool;
-                break;
-            case "Line" :
-                lineTool.setColor(colorPicker.getValue());
-                lineTool.setSize(size);
-                currentTool = lineTool;
-                break;
-        }
     }
 
     public static void repaintCanvas(){

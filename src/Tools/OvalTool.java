@@ -1,6 +1,7 @@
 package Tools;
 import Figures.Oval;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import sample.Controller;
 
@@ -9,6 +10,10 @@ public class OvalTool extends Tool{
     public OvalTool(Canvas canvas) {
         super(canvas);
         this.graphicsContext = canvas.getGraphicsContext2D();
+        button = new Button();
+        button.setPrefHeight(70);
+        button.setPrefWidth(75);
+        button.setText("Oval");
     }
 
     @Override
