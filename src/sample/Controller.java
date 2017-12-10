@@ -51,12 +51,14 @@ public class Controller {
     private ObservableList<String> tools = FXCollections.observableArrayList(
             "Pen",
             "Oval",
-            "Rectangle"
+            "Rectangle",
+            "Line"
     );
 
     private Tool pen;
     private Tool oval;
     private Tool rectTool;
+    private Tool lineTool;
     private Tool currentTool;
     public static int size;
 
@@ -80,6 +82,7 @@ public class Controller {
         pen = new Pen(canvas);
         oval = new OvalTool(canvas);
         rectTool  = new RectTool(canvas);
+        lineTool = new LineTool(canvas);
         toolSelect();
         getSize();
         setColor();
@@ -116,6 +119,11 @@ public class Controller {
                 rectTool.setColor(colorPicker.getValue());
                 rectTool.setSize(size);
                 currentTool = rectTool;
+                break;
+            case "Line" :
+                lineTool.setColor(colorPicker.getValue());
+                lineTool.setSize(size);
+                currentTool = lineTool;
                 break;
         }
     }

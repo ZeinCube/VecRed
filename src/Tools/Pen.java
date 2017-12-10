@@ -1,13 +1,10 @@
 package Tools;
 
-import Figures.Line;
+import Figures.PolyLine;
 import javafx.scene.canvas.Canvas;
 
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Paint;
 import sample.Controller;
-
-import java.awt.*;
 
 public class Pen extends Tool {
 
@@ -17,7 +14,7 @@ public class Pen extends Tool {
     }
 
     private void newLine(double size, double x0, double y0, double x1, double y1){
-        Controller.figures.add(new Line(x0,y0,x1,y1,size,color));
+        Controller.figures.add(new PolyLine(x0,y0,x1,y1,size,color));
     }
 
     @Override
