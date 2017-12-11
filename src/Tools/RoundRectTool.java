@@ -1,25 +1,26 @@
 package Tools;
 
 import Figures.Figure;
-import Figures.Line;
+import Figures.Rect;
+import Figures.RoundRect;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import sample.Controller;
 
-public class LineTool extends Tool {
-    public LineTool(Canvas canvas) {
+public class RoundRectTool extends Tool {
+    public RoundRectTool(Canvas canvas) {
         super(canvas);
         graphicsContext = canvas.getGraphicsContext2D();
         button = new Button();
         button.setPrefHeight(70);
         button.setPrefWidth(75);
-        button.setText("Line");
+        button.setText("RoundedRectangle");
     }
 
     @Override
     public void getOnMousePressed(MouseEvent event) {
-        x0 = event.getX()+Figure.xOffSet;
+        x0 = event.getX()+ Figure.xOffSet;
         y0 = event.getY()+Figure.yOffSet;
     }
 
@@ -27,13 +28,12 @@ public class LineTool extends Tool {
     public void getOnMouseDragged(MouseEvent event) {
         graphicsContext.clearRect(0,0,1920,1080);
         Controller.repaintCanvas();
-        new Line(x0,y0,event.getX()+Figure.xOffSet,event.getY()+Figure.yOffSet,size,color);
+        new RoundRect(x0,y0,event.getX()+Figure.xOffSet,event.getY()+Figure.yOffSet,size,color);
     }
 
     @Override
     public void getOnMouseReleased(MouseEvent event) {
-        graphicsContext.clearRect(0,0,1920,1080);
         Controller.repaintCanvas();
-        Controller.addFigure(new Line(x0,y0,event.getX()+Figure.xOffSet,event.getY()+Figure.yOffSet,size,color));
+        Controller.addFigure(new RoundRect(x0,y0,event.getX()+Figure.xOffSet,event.getY()+Figure.yOffSet,size,color));
     }
 }

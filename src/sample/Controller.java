@@ -1,6 +1,7 @@
 package sample;
 
 import Figures.Figure;
+import Figures.RoundRect;
 import Tools.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -70,6 +71,8 @@ public class Controller {
         new OvalTool(canvas);
         new RectTool(canvas);
         new LineTool(canvas);
+        new Hand(canvas);
+        new RoundRectTool(canvas);
         drawToolBut();
         getSize();
         setColor();

@@ -7,7 +7,6 @@ import javafx.scene.shape.StrokeLineCap;
 public class Line extends Figure {
     public Line(double startingX, double startingY, double endX, double endY, double size, Paint color) {
         super(startingX, startingY, endX, endY, size, color);
-        draw(graphicsContext);
     }
 
     @Override
@@ -15,6 +14,6 @@ public class Line extends Figure {
         graphicsContext.setLineWidth(size);
         graphicsContext.setStroke(color);
         graphicsContext.setLineCap(StrokeLineCap.ROUND);
-        graphicsContext.strokeLine(startingX,startingY,endX,endY);
+        graphicsContext.strokeLine(startingX-Figure.xOffSet,startingY-Figure.yOffSet,endX-Figure.xOffSet,endY-Figure.yOffSet);
     }
 }

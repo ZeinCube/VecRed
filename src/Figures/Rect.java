@@ -7,7 +7,6 @@ public class Rect extends Figure {
 
     public Rect(double startingX, double startingY, double endX, double endY, double size, Paint color) {
         super(startingX,startingY,endX,endY, size, color);
-        draw(graphicsContext);
     }
 
     @Override
@@ -15,6 +14,6 @@ public class Rect extends Figure {
         graphicsContext.setFill(color);
         graphicsContext.setStroke(color);
         graphicsContext.setLineWidth(size);
-        graphicsContext.strokeRect(Math.min(startingX,endX),Math.min(startingY,endY),Math.abs(startingX-endX),Math.abs(startingY-endY));
+        graphicsContext.strokeRect(Math.min(startingX,endX)-Figure.xOffSet,Math.min(startingY,endY)-Figure.yOffSet,Math.abs(startingX-endX),Math.abs(startingY-endY));
     }
 }

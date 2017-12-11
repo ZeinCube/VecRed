@@ -1,5 +1,6 @@
 package Tools;
 
+import Figures.Figure;
 import Figures.PolyLine;
 import javafx.scene.canvas.Canvas;
 
@@ -24,8 +25,8 @@ public class Pen extends Tool {
 
     @Override
     public void getOnMousePressed(MouseEvent event) {
-        x = event.getX()-size/2;
-        y = event.getY()-size/2;
+        x = (event.getX()-size/2)+Figure.xOffSet;
+        y = (event.getY()-size/2)+Figure.yOffSet;
         x0 = x;
         y0 = y;
         newLine(size,x,y,x,y);
@@ -33,8 +34,8 @@ public class Pen extends Tool {
 
     @Override
     public void getOnMouseDragged(MouseEvent event) {
-        x = (int) (event.getX()-size/2);
-        y = event.getY()-size/2;
+        x = (event.getX()-size/2)+Figure.xOffSet;
+        y = (event.getY()-size/2)+Figure.yOffSet;
         newLine(size,x0, y0, x, y);
         x0 = x;
         y0 = y;

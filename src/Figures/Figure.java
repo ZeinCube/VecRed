@@ -8,6 +8,7 @@ public abstract class Figure {
     Paint color;
     double size;
     public static GraphicsContext graphicsContext;
+    public static double xOffSet , yOffSet;
 
     public Figure(double startingX, double startingY, double endX, double endY , double size, Paint color) {
         this.startingX = startingX;
@@ -17,6 +18,11 @@ public abstract class Figure {
         this.size = size;
         this.color = color;
         draw(graphicsContext);
+    }
+
+    public static void setOffSet(double x,double y){
+        xOffSet = x;
+        yOffSet = y;
     }
 
     public abstract void draw(GraphicsContext graphicsContext);

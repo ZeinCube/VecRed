@@ -8,15 +8,14 @@ public class PolyLine extends Figure{
 
     public PolyLine(double startingX, double startingY, double endX, double endY, double size , Paint color) {
         super(startingX,startingY,endX,endY, size, color);
-        draw(graphicsContext);
     }
 
     public void draw(GraphicsContext graphicsContext){
         double[] x = new double[]{
-                startingX+size/2,endX+size/2
+                (startingX+size/2)-Figure.xOffSet,(endX+size/2)-Figure.xOffSet
         };
         double[] y = new double[]{
-                startingY+size/2,endY+size/2
+                (startingY+size/2)-Figure.yOffSet,(endY+size/2)-Figure.yOffSet
         };
         graphicsContext.setStroke(color);
         graphicsContext.setLineWidth(size);

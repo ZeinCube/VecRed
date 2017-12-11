@@ -1,4 +1,5 @@
 package Tools;
+import Figures.Figure;
 import Figures.Oval;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
@@ -18,20 +19,20 @@ public class OvalTool extends Tool{
 
     @Override
     public void getOnMousePressed(MouseEvent event) {
-        x0 = event.getX();
-        y0 = event.getY();
+        x0 = event.getX()+Figure.xOffSet;
+        y0 = event.getY()+Figure.yOffSet;
     }
 
     @Override
     public void getOnMouseDragged(MouseEvent event) {
         graphicsContext.clearRect(0,0,1920,1080);
         Controller.repaintCanvas();
-        new Oval(x0,y0,event.getX(),event.getY(),size, color);
+        new Oval(x0,y0,event.getX()+Figure.xOffSet,event.getY()+Figure.yOffSet,size,color);
     }
 
     @Override
     public void getOnMouseReleased(MouseEvent event) {
         Controller.repaintCanvas();
-        Controller.addFigure(new Oval(x0,y0, event.getX(), event.getY() , size, color));
+        Controller.addFigure(new Oval(x0,y0,event.getX()+Figure.xOffSet,event.getY()+Figure.yOffSet,size,color));
     }
 }
