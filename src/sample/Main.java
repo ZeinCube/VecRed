@@ -6,15 +6,23 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 public class Main extends Application {
+
+    public static Window stage;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        stage = primaryStage;
         primaryStage.setTitle("VecRed");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
+    }
+
+    public static Window getStage(){
+        return stage;
     }
 
     public static void main(String[] args) {

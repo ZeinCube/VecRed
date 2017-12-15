@@ -1,9 +1,9 @@
 package sample;
 
 import Figures.Figure;
-import Figures.RoundRect;
 import Tools.*;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -11,7 +11,11 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+import javafx.stage.Window;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,6 +24,9 @@ import java.util.List;
 public class Controller {
     @FXML
     public BorderPane borderPane;
+    public javafx.scene.control.MenuBar MenuBar;
+    public Label scaleSizeLable;
+    public Slider SliderScale;
 
     @FXML
     private GraphicsContext exampleBrush;
@@ -45,6 +52,7 @@ public class Controller {
     @FXML
     private Slider brushSize;
 
+    public static Double scaleSize = 1.0;
     public static List<Figure> figures = new LinkedList<>();
     private GraphicsContext graphicsContext;
     public static List<Tool> toolList = new ArrayList<>();
@@ -68,11 +76,13 @@ public class Controller {
         getGraphCont();
         colorPicker.setValue(Color.BLACK);
         currentTool = new Pen(canvas);
+        Figure.graphicsContext = canvas.getGraphicsContext2D();
         new OvalTool(canvas);
         new RectTool(canvas);
         new LineTool(canvas);
         new Hand(canvas);
         new RoundRectTool(canvas);
+        new Zoom(canvas);
         drawToolBut();
         getSize();
         setColor();
@@ -124,5 +134,78 @@ public class Controller {
 
     public void canvasOnMouseReleased(MouseEvent event) {
         currentTool.getOnMouseReleased(event);
+    }
+
+    public void onScrollScale() {
+        scaleSize = SliderScale.getValue();
+        scaleSizeLable.setText(String.valueOf(Math.round(SliderScale.getValue())));
+    }
+
+    public void saveFile(ActionEvent actionEvent) {
+        File directory = new File("C:/");
+        FileChooser directoryChooser = new FileChooser();
+        directoryChooser.setInitialDirectory(directory);
+        directoryChooser.setTitle("Select Folder");
+        directoryChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Vector image (*.vi)","*.vi"));
+        directory = directoryChooser.showSaveDialog(Main.getStage());
+        ObjectOutputStream outputStream = null;
+        if(directory!=null) {
+            try {
+                outputStream = new ObjectOutputStream(new FileOutputStream(directory));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            for (Figure figure : figures) {
+                try {
+                    outputStream.writeObject(figure);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            try {
+                outputStream.flush();
+                outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void openFile(ActionEvent actionEvent) {
+        File directory = new File("C:/");
+        FileChooser directoryChooser = new FileChooser();
+        directoryChooser.setInitialDirectory(directory);
+        directoryChooser.setTitle("Select Folder");
+        directoryChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Vector image (*.vi)","*.vi"));
+        directory = directoryChooser.showOpenDialog(Main.getStage());
+        ObjectInputStream inputStream = null;
+        if(directory!=null) {
+            try {
+                inputStream = new ObjectInputStream(new FileInputStream(directory));
+            } catch (IOException e) {
+                e.printStackTrace();
+                try {
+                    inputStream.close();
+                } catch (IOException ignored) {
+                }
+            }
+            try {
+                figures.clear();
+                while(true) {
+                    figures.add((Figure) inputStream.readObject());
+                }
+            } catch (EOFException ignored) {
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            finally {
+                try {
+                    inputStream.close();
+                } catch (IOException ignored) {
+                }
+            }
+            graphicsContext.clearRect(0, 0, 1920, 1080);
+            repaintCanvas();
+        }
     }
 }

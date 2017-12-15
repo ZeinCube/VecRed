@@ -19,21 +19,21 @@ public class LineTool extends Tool {
 
     @Override
     public void getOnMousePressed(MouseEvent event) {
-        x0 = event.getX()+Figure.xOffSet;
-        y0 = event.getY()+Figure.yOffSet;
+        x0 = (event.getX()+Figure.xOffSet)/Controller.scaleSize;
+        y0 = (event.getY()+Figure.yOffSet)/Controller.scaleSize;
     }
 
     @Override
     public void getOnMouseDragged(MouseEvent event) {
         graphicsContext.clearRect(0,0,1920,1080);
         Controller.repaintCanvas();
-        new Line(x0,y0,event.getX()+Figure.xOffSet,event.getY()+Figure.yOffSet,size,color);
+        new Line(x0,y0,(event.getX()+Figure.xOffSet)/Controller.scaleSize,(event.getY()+Figure.yOffSet)/Controller.scaleSize,size,color);
     }
 
     @Override
     public void getOnMouseReleased(MouseEvent event) {
         graphicsContext.clearRect(0,0,1920,1080);
         Controller.repaintCanvas();
-        Controller.addFigure(new Line(x0,y0,event.getX()+Figure.xOffSet,event.getY()+Figure.yOffSet,size,color));
+        Controller.addFigure(new Line(x0,y0,(event.getX()+Figure.xOffSet)/Controller.scaleSize,(event.getY()+Figure.yOffSet)/Controller.scaleSize,size,color));
     }
 }

@@ -6,10 +6,17 @@ import javafx.scene.canvas.Canvas;
 
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.StrokeLineCap;
 import sample.Controller;
 
-public class Pen extends Tool {
+import java.util.ArrayList;
+import java.util.List;
 
+public class Pen extends Tool {
+    List<Double> xs;
+    List<Double> ys;
+    static int n;
     public Pen(Canvas canvas) {
         super(canvas);
         this.graphicsContext = canvas.getGraphicsContext2D();
@@ -19,30 +26,48 @@ public class Pen extends Tool {
         button.setText("Pen");
     }
 
-    private void newLine(double size, double x0, double y0, double x1, double y1){
-        Controller.figures.add(new PolyLine(x0,y0,x1,y1,size,color));
+    private void newLine(double[] xs, double[] ys, double size, Paint color){
+        Controller.figures.add(new PolyLine(xs,ys,size,color,n));
     }
 
     @Override
     public void getOnMousePressed(MouseEvent event) {
-        x = (event.getX()-size/2)+Figure.xOffSet;
-        y = (event.getY()-size/2)+Figure.yOffSet;
-        x0 = x;
-        y0 = y;
-        newLine(size,x,y,x,y);
+        n = 1;
+        xs = new ArrayList<>();
+        ys = new ArrayList<>();
+        x0 = (event.getX()+Figure.xOffSet)/Controller.scaleSize;
+        xs.add(x0);
+        y0 = (event.getY()+Figure.yOffSet)/Controller.scaleSize;
+        ys.add(y0);
+        new PolyLine(x0,y0,(event.getX()+Figure.xOffSet)/Controller.scaleSize,(event.getY()+Figure.yOffSet)/Controller.scaleSize,size,color);
     }
 
     @Override
     public void getOnMouseDragged(MouseEvent event) {
-        x = (event.getX()-size/2)+Figure.xOffSet;
-        y = (event.getY()-size/2)+Figure.yOffSet;
-        newLine(size,x0, y0, x, y);
+        n++;
+        x = (event.getX()+Figure.xOffSet)/Controller.scaleSize;
+        xs.add(x);
+        y = (event.getY()+Figure.yOffSet)/Controller.scaleSize;
+        ys.add(y);
+        new PolyLine(x0,y0,(event.getX()+Figure.xOffSet)/Controller.scaleSize,(event.getY()+Figure.yOffSet)/Controller.scaleSize,size,color);
         x0 = x;
         y0 = y;
     }
 
     @Override
     public void getOnMouseReleased(MouseEvent event) {
-        newLine(size,x0,y0,x,y);
+        double xa[] = new double[xs.size()];
+        double ya[] = new double[ys.size()];
+        int i = 0;
+        for(double x : xs){
+            xa[i] = x;
+            i++;
+        }
+        i = 0;
+        for (double y : ys){
+            ya[i] = y;
+            i++;
+        }
+        newLine(xa,ya,size,color);
     }
 }

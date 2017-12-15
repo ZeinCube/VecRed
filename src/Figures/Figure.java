@@ -3,9 +3,14 @@ package Figures;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Paint;
 
-public abstract class Figure {
+import java.io.Serializable;
+
+public abstract class Figure implements Serializable {
+    double[] x;
+    double[] y;
+    int n;
     double startingX,startingY,endX,endY;
-    Paint color;
+    String color;
     double size;
     public static GraphicsContext graphicsContext;
     public static double xOffSet , yOffSet;
@@ -16,8 +21,11 @@ public abstract class Figure {
         this.endX = endX;
         this.endY = endY;
         this.size = size;
-        this.color = color;
+        this.color = color.toString();
         draw(graphicsContext);
+    }
+
+    protected Figure() {
     }
 
     public static void setOffSet(double x,double y){
