@@ -6,10 +6,8 @@ import javafx.scene.paint.Paint;
 import java.io.Serializable;
 
 public abstract class Figure implements Serializable {
-    double[] x;
-    double[] y;
-    int n;
     double startingX,startingY,endX,endY;
+    boolean isFilled;
     String color;
     double size;
     public static GraphicsContext graphicsContext;

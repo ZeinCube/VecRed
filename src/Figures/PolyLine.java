@@ -5,35 +5,35 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.shape.StrokeLineJoin;
 import sample.Controller;
+import java.util.LinkedList;
 
 public class PolyLine extends Figure{
+    LinkedList<Point> points = new LinkedList<>();
+    double[] x;
+    double[] y;
+    int n;
 
-    public PolyLine(double x0 , double y0 , double x1 , double y1 ,double size, Paint color) {
-        super(x0,y0,x1,y1,size,color);
-        n = 2;
-        x = new double[]{startingX*Controller.scaleSize-Figure.xOffSet,endX*Controller.scaleSize-Figure.xOffSet};
-        y = new double[]{startingY*Controller.scaleSize-Figure.yOffSet,endY*Controller.scaleSize-Figure.yOffSet};
+    public PolyLine(LinkedList<Point> points , Paint color,double size){
+        this.color = color.toString();
+        this.points = points;
+        this.size = size;
+        x = new double[points.size()];
+        y = new double[points.size()];
+        n = points.size();
         draw(graphicsContext);
     }
 
-    public PolyLine(double[] xs , double[] ys , double sizeOf , Paint color,int points){
-        this.color = color.toString();
-        size = sizeOf;
-        n = points;
-        x = xs;
-        y = ys;
-        graphicsContext.setLineCap(StrokeLineCap.ROUND);
-        graphicsContext.setStroke(Paint.valueOf(this.color));
-        graphicsContext.setLineWidth(size*Controller.scaleSize);
-        graphicsContext.strokePolyline(x,y,n);
-    }
-
     public void draw(GraphicsContext graphicsContext){
+        for(Point p : points){
+            x[points.indexOf(p)] = p.x*Controller.scaleSize-Figure.xOffSet;
+            y[points.indexOf(p)] = p.y*Controller.scaleSize-Figure.yOffSet;
+        }
         graphicsContext.setLineCap(StrokeLineCap.ROUND);
+        graphicsContext.setLineJoin(StrokeLineJoin.ROUND);
         graphicsContext.setStroke(Color.BLACK);
         graphicsContext.setLineWidth(size*Controller.scaleSize);
-        System.out.println(size);
         graphicsContext.strokePolyline(x, y,n);
     }
 

@@ -1,6 +1,7 @@
 package Tools;
 
 import Figures.Figure;
+import Figures.Point;
 import Figures.PolyLine;
 import javafx.scene.canvas.Canvas;
 
@@ -11,12 +12,11 @@ import javafx.scene.shape.StrokeLineCap;
 import sample.Controller;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Pen extends Tool {
-    List<Double> xs;
-    List<Double> ys;
-    static int n;
+    LinkedList<Point> points;
     public Pen(Canvas canvas) {
         super(canvas);
         this.graphicsContext = canvas.getGraphicsContext2D();
@@ -26,48 +26,26 @@ public class Pen extends Tool {
         button.setText("Pen");
     }
 
-    private void newLine(double[] xs, double[] ys, double size, Paint color){
-        Controller.figures.add(new PolyLine(xs,ys,size,color,n));
+    private void newLine(LinkedList<Point> points, double size, Paint color){
+        Controller.figures.add(new PolyLine(points,color,size));
     }
 
     @Override
     public void getOnMousePressed(MouseEvent event) {
-        n = 1;
-        xs = new ArrayList<>();
-        ys = new ArrayList<>();
-        x0 = (event.getX()+Figure.xOffSet)/Controller.scaleSize;
-        xs.add(x0);
-        y0 = (event.getY()+Figure.yOffSet)/Controller.scaleSize;
-        ys.add(y0);
-        new PolyLine(x0,y0,(event.getX()+Figure.xOffSet)/Controller.scaleSize,(event.getY()+Figure.yOffSet)/Controller.scaleSize,size,color);
+        points = new LinkedList<>();
+        points.add(new Point((event.getX()+Figure.xOffSet)/Controller.scaleSize,(event.getY()+Figure.yOffSet)/Controller.scaleSize));
+        points.add(new Point((event.getX()+Figure.xOffSet)/Controller.scaleSize,(event.getY()+Figure.yOffSet)/Controller.scaleSize));
+        new PolyLine(points,color,size);
     }
 
     @Override
     public void getOnMouseDragged(MouseEvent event) {
-        n++;
-        x = (event.getX()+Figure.xOffSet)/Controller.scaleSize;
-        xs.add(x);
-        y = (event.getY()+Figure.yOffSet)/Controller.scaleSize;
-        ys.add(y);
-        new PolyLine(x0,y0,(event.getX()+Figure.xOffSet)/Controller.scaleSize,(event.getY()+Figure.yOffSet)/Controller.scaleSize,size,color);
-        x0 = x;
-        y0 = y;
+        points.add(new Point((event.getX()+Figure.xOffSet)/Controller.scaleSize,(event.getY()+Figure.yOffSet)/Controller.scaleSize));
+        new PolyLine(points,color,size);
     }
 
     @Override
     public void getOnMouseReleased(MouseEvent event) {
-        double xa[] = new double[xs.size()];
-        double ya[] = new double[ys.size()];
-        int i = 0;
-        for(double x : xs){
-            xa[i] = x;
-            i++;
-        }
-        i = 0;
-        for (double y : ys){
-            ya[i] = y;
-            i++;
-        }
-        newLine(xa,ya,size,color);
+        newLine(points,size,color);
     }
 }
