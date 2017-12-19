@@ -9,7 +9,7 @@ import javafx.scene.paint.Paint;
 import sample.Controller;
 
 public abstract class Tool {
-    double x, y, x0, y0 , size;
+    double x0, y0 , size;
     Canvas canvas;
     GraphicsContext graphicsContext;
     Paint color;

@@ -18,14 +18,14 @@ public class Hand extends Tool{
 
     @Override
     public void getOnMousePressed(MouseEvent event) {
-        x0 = Figure.xOffSet+event.getX();
-        y0 = Figure.yOffSet+event.getY();
+        x0 = Figure.xOffSet-event.getX()/Controller.scaleSize;
+        y0 = Figure.yOffSet-event.getY()/Controller.scaleSize;
     }
 
     @Override
     public void getOnMouseDragged(MouseEvent event) {
-        Figure.xOffSet = x0-event.getX();
-        Figure.yOffSet = y0-event.getY();
+        Figure.xOffSet = x0+event.getX()/Controller.scaleSize;
+        Figure.yOffSet = y0+event.getY()/Controller.scaleSize;
         graphicsContext.clearRect(0,0,1920,1080);
         Controller.repaintCanvas();
     }

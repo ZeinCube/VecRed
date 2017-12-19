@@ -4,9 +4,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Paint;
 import sample.Controller;
 
-public class Oval extends Figure {
+public class Ellipse extends Figure {
 
-    public Oval(double startingX, double startingY, double endX, double endY, double size, Paint color) {
+    public Ellipse(double startingX, double startingY, double endX, double endY, double size, Paint color) {
         super(startingX,startingY,endX,endY, size,color);
     }
 
@@ -15,6 +15,7 @@ public class Oval extends Figure {
         graphicsContext.setFill(Paint.valueOf(color));
         graphicsContext.setStroke(Paint.valueOf(color));
         graphicsContext.setLineWidth(size*Controller.scaleSize);
-        graphicsContext.strokeOval(Math.min(startingX,endX)*Controller.scaleSize-Figure.xOffSet,Math.min(startingY,endY)*Controller.scaleSize-Figure.yOffSet,Math.abs(startingX-endX)*Controller.scaleSize,Math.abs(startingY-endY)*Controller.scaleSize);
+        Point point = new Point((Math.min(startingX,endX)+Figure.xOffSet),(Math.min(startingY,endY)+Figure.yOffSet));
+        graphicsContext.strokeOval(point.x,point.y,Math.abs(startingX-endX),Math.abs(startingY-endY));
     }
 }

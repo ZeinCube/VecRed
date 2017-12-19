@@ -11,6 +11,8 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+import javafx.scene.transform.Affine;
+import javafx.scene.transform.Scale;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
@@ -82,7 +84,6 @@ public class Controller {
         new LineTool(canvas);
         new Hand(canvas);
         new RoundRectTool(canvas);
-        new Zoom(canvas);
         drawToolBut();
         getSize();
         setColor();
@@ -138,6 +139,9 @@ public class Controller {
 
     public void onScrollScale() {
         scaleSize = SliderScale.getValue();
+        graphicsContext.clearRect(0,0,1920,1080);
+        graphicsContext.setTransform(new Affine(new Scale(SliderScale.getValue(),SliderScale.getValue())));
+        repaintCanvas();
         scaleSizeLable.setText(String.valueOf(Math.round(SliderScale.getValue())));
     }
 

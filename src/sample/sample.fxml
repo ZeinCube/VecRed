@@ -20,7 +20,7 @@
             <MenuBar fx:id="MenuBar">
                 <Menu text="File">
                     <MenuItem onAction="#saveFile" text="Save as" />
-                    <MenuItem onAction="#openFile" text="Open file"/>
+                    <MenuItem onAction="#openFile" text="Open file" />
                     <MenuItem onAction="#onExit" text="Exit" />
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
@@ -29,7 +29,7 @@
                     </items>
                 </Menu>
             </MenuBar>
-            <ToolBar fx:id="toolBar" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="103.0" prefWidth="1920.0">
+            <ToolBar fx:id="toolBar" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="126.0" prefWidth="1920.0">
                 <HBox alignment="CENTER" prefHeight="6.0" prefWidth="1.0" spacing="5" />
                 <Slider fx:id="brushSize" min="1.0" onMouseClicked="#getSize" onMouseDragged="#getSize" onMousePressed="#getSize" onMouseReleased="#getSize" onScroll="#getSize" value="15.0" />
                 <Label fx:id="brushSizeLabel" text="15" />
