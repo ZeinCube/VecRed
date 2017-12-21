@@ -16,6 +16,6 @@ public class Line extends Figure {
         graphicsContext.setLineWidth(size*Controller.scaleSize);
         graphicsContext.setStroke(Paint.valueOf(color));
         graphicsContext.setLineCap(StrokeLineCap.ROUND);
-        graphicsContext.strokeLine(startingX+Figure.xOffSet,startingY+Figure.yOffSet,endX+Figure.xOffSet,endY+Figure.yOffSet);
+        graphicsContext.strokeLine(startingX*Controller.scaleSize-Figure.xOffSet,startingY*Controller.scaleSize-Figure.yOffSet,endX*Controller.scaleSize-Figure.xOffSet,endY*Controller.scaleSize-Figure.yOffSet);
     }
 }

@@ -11,8 +11,6 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
-import javafx.scene.transform.Affine;
-import javafx.scene.transform.Scale;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
@@ -84,12 +82,19 @@ public class Controller {
         new LineTool(canvas);
         new Hand(canvas);
         new RoundRectTool(canvas);
+        new Selection(canvas);
         drawToolBut();
         getSize();
         setColor();
         canvas.toBack();
     }
 
+    public void onScrollScale() {
+        scaleSize = SliderScale.getValue();
+        graphicsContext.clearRect(0,0,1920,1080);
+        repaintCanvas();
+        scaleSizeLable.setText(String.valueOf(Math.round(SliderScale.getValue())));
+    }
     private void drawToolBut(){
         for (Tool tool : toolList){
             tool.button.setOnMouseClicked((MouseEvent event) -> {
@@ -135,14 +140,6 @@ public class Controller {
 
     public void canvasOnMouseReleased(MouseEvent event) {
         currentTool.getOnMouseReleased(event);
-    }
-
-    public void onScrollScale() {
-        scaleSize = SliderScale.getValue();
-        graphicsContext.clearRect(0,0,1920,1080);
-        graphicsContext.setTransform(new Affine(new Scale(SliderScale.getValue(),SliderScale.getValue())));
-        repaintCanvas();
-        scaleSizeLable.setText(String.valueOf(Math.round(SliderScale.getValue())));
     }
 
     public void saveFile(ActionEvent actionEvent) {

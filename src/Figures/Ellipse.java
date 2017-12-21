@@ -15,7 +15,6 @@ public class Ellipse extends Figure {
         graphicsContext.setFill(Paint.valueOf(color));
         graphicsContext.setStroke(Paint.valueOf(color));
         graphicsContext.setLineWidth(size*Controller.scaleSize);
-        Point point = new Point((Math.min(startingX,endX)+Figure.xOffSet),(Math.min(startingY,endY)+Figure.yOffSet));
-        graphicsContext.strokeOval(point.x,point.y,Math.abs(startingX-endX),Math.abs(startingY-endY));
+        graphicsContext.strokeOval(Math.min(startingX,endX)*Controller.scaleSize-Figure.xOffSet,Math.min(startingY,endY)*Controller.scaleSize-Figure.yOffSet,Math.abs(startingX-endX)*Controller.scaleSize,Math.abs(startingY-endY)*Controller.scaleSize);
     }
 }

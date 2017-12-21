@@ -20,20 +20,20 @@ public class RectTool extends Tool{
 
     @Override
     public void getOnMousePressed(MouseEvent event) {
-        x0 = (event.getX()-Figure.xOffSet)/Controller.scaleSize;
-        y0 = (event.getY()-Figure.yOffSet)/Controller.scaleSize;
+        x0 = (event.getX()+Figure.xOffSet)/Controller.scaleSize;
+        y0 = (event.getY()+Figure.yOffSet)/Controller.scaleSize;
     }
 
     @Override
     public void getOnMouseDragged(MouseEvent event) {
         graphicsContext.clearRect(0,0,1920,1080);
         Controller.repaintCanvas();
-        new Rect(x0,y0,(event.getX()-Figure.xOffSet)/Controller.scaleSize,(event.getY()-Figure.yOffSet)/Controller.scaleSize,size,color);
+        new Rect(x0,y0,(event.getX()+Figure.xOffSet)/Controller.scaleSize,(event.getY()+Figure.yOffSet)/Controller.scaleSize,size,color);
     }
 
     @Override
     public void getOnMouseReleased(MouseEvent event) {
         Controller.repaintCanvas();
-        Controller.addFigure(new Rect(x0,y0,(event.getX()-Figure.xOffSet)/Controller.scaleSize,(event.getY()-Figure.yOffSet)/Controller.scaleSize,size,color));
+        Controller.addFigure(new Rect(x0,y0,(event.getX()+Figure.xOffSet)/Controller.scaleSize,(event.getY()+Figure.yOffSet)/Controller.scaleSize,size,color));
     }
 }
