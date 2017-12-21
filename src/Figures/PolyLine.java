@@ -2,7 +2,6 @@ package Figures;
 
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeLineJoin;
@@ -16,7 +15,7 @@ public class PolyLine extends Figure{
     int n;
 
     public PolyLine(LinkedList<Point> points , Paint color,double size){
-        this.color = color.toString();
+        this.colorOfStroke = color;
         this.points = points;
         this.size = size;
         x = new double[points.size()];
@@ -32,7 +31,7 @@ public class PolyLine extends Figure{
         }
         graphicsContext.setLineCap(StrokeLineCap.ROUND);
         graphicsContext.setLineJoin(StrokeLineJoin.ROUND);
-        graphicsContext.setStroke(Color.BLACK);
+        graphicsContext.setStroke(colorOfStroke);
         graphicsContext.setLineWidth(size*Controller.scaleSize);
         graphicsContext.strokePolyline(x, y,n);
     }

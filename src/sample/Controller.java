@@ -11,9 +11,8 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
-import javafx.stage.DirectoryChooser;
+import javafx.scene.paint.Paint;
 import javafx.stage.FileChooser;
-import javafx.stage.Window;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -27,6 +26,7 @@ public class Controller {
     public javafx.scene.control.MenuBar MenuBar;
     public Label scaleSizeLable;
     public Slider SliderScale;
+    public ColorPicker colorOfFillingPicker;
 
     @FXML
     private GraphicsContext exampleBrush;
@@ -59,6 +59,8 @@ public class Controller {
 
     private Tool currentTool;
     public static int size;
+    public static boolean isFilling;
+    public static Paint colorOfFilling = Color.BLACK;
 
     public void onExit() {
         Platform.exit();
@@ -75,6 +77,9 @@ public class Controller {
     public void initialize(){
         getGraphCont();
         colorPicker.setValue(Color.BLACK);
+        colorOfFillingPicker.setValue(Color.BLACK);
+        setFillingColor();
+        colorOfFillingPicker.setVisible(false);
         currentTool = new Pen(canvas);
         Figure.graphicsContext = canvas.getGraphicsContext2D();
         new OvalTool(canvas);
@@ -100,7 +105,7 @@ public class Controller {
             tool.button.setOnMouseClicked((MouseEvent event) -> {
                 currentTool = tool;
                 currentTool.setSize(size);
-                currentTool.setColor(colorPicker.getValue());
+                currentTool.setColorOfStroke(colorPicker.getValue());
             });
             toolBar.getItems().add(tool.button);
         }
@@ -113,7 +118,7 @@ public class Controller {
     }
 
     public void setColor() {
-        currentTool.setColor(colorPicker.getValue());
+        currentTool.setColorOfStroke(colorPicker.getValue());
         canvas.getGraphicsContext2D().setFill(colorPicker.getValue());
         canvas.getGraphicsContext2D().setStroke(colorPicker.getValue());
         exampleBrush.setFill(colorPicker.getValue());
@@ -207,6 +212,21 @@ public class Controller {
             }
             graphicsContext.clearRect(0, 0, 1920, 1080);
             repaintCanvas();
+    }
+    }
+
+    public void setFigureFilling() {
+        if (isFilling){
+            isFilling = false;
+            colorOfFillingPicker.setVisible(false);
+        }else{
+            isFilling = true;
+            colorOfFillingPicker.setVisible(true);
         }
     }
+
+    public void setFillingColor() {
+        colorOfFilling = colorOfFillingPicker.getValue();
+    }
+
 }

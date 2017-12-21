@@ -12,7 +12,7 @@ public abstract class Tool {
     double x0, y0 , size;
     Canvas canvas;
     GraphicsContext graphicsContext;
-    Paint color;
+    Paint colorOfStroke;
     public Button button;
 
     public Tool(Canvas canvas) {
@@ -28,5 +28,5 @@ public abstract class Tool {
     public void setSize(double size){
         this.size = size;
     }
-    public void setColor(Paint color){this.color = color;}
+    public void setColorOfStroke(Paint colorOfStroke){this.colorOfStroke = colorOfStroke;}
 }

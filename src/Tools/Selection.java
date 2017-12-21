@@ -11,7 +11,7 @@ public class Selection extends Tool {
         graphicsContext = canvas.getGraphicsContext2D();
         button = new Button();
         button.setPrefHeight(70);
-        button.setPrefWidth(75);
+        button.setPrefWidth(70);
         button.setText("Select");
     }
 

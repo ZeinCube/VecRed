@@ -13,7 +13,7 @@ public class LineTool extends Tool {
         graphicsContext = canvas.getGraphicsContext2D();
         button = new Button();
         button.setPrefHeight(70);
-        button.setPrefWidth(75);
+        button.setPrefWidth(70);
         button.setText("Line");
     }
 
@@ -27,13 +27,13 @@ public class LineTool extends Tool {
     public void getOnMouseDragged(MouseEvent event) {
         graphicsContext.clearRect(0,0,1920,1080);
         Controller.repaintCanvas();
-        new Line(x0,y0,(event.getX()+Figure.xOffSet)/Controller.scaleSize,(event.getY()+Figure.yOffSet)/Controller.scaleSize,size,color);
+        new Line(x0,y0,(event.getX()+Figure.xOffSet)/Controller.scaleSize,(event.getY()+Figure.yOffSet)/Controller.scaleSize,size, colorOfStroke);
     }
 
     @Override
     public void getOnMouseReleased(MouseEvent event) {
         graphicsContext.clearRect(0,0,1920,1080);
         Controller.repaintCanvas();
-        Controller.addFigure(new Line(x0,y0,(event.getX()+Figure.xOffSet)/Controller.scaleSize,(event.getY()+Figure.yOffSet)/Controller.scaleSize,size,color));
+        Controller.addFigure(new Line(x0,y0,(event.getX()+Figure.xOffSet)/Controller.scaleSize,(event.getY()+Figure.yOffSet)/Controller.scaleSize,size, colorOfStroke));
     }
 }

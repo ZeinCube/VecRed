@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
@@ -11,12 +12,11 @@
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="768.0" minWidth="1200.0" prefHeight="768.0" prefWidth="1308.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
     <top>
-        <VBox fx:id="VBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="139.0" prefWidth="1920.0">
+        <VBox fx:id="VBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="158.0" prefWidth="1920.0">
             <MenuBar fx:id="MenuBar">
                 <Menu text="File">
                     <MenuItem onAction="#saveFile" text="Save as" />
@@ -30,17 +30,23 @@
                 </Menu>
             </MenuBar>
             <ToolBar fx:id="toolBar" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="126.0" prefWidth="1920.0">
-                <HBox alignment="CENTER" prefHeight="6.0" prefWidth="1.0" spacing="5" />
                 <Slider fx:id="brushSize" min="1.0" onMouseClicked="#getSize" onMouseDragged="#getSize" onMousePressed="#getSize" onMouseReleased="#getSize" onScroll="#getSize" value="15.0" />
                 <Label fx:id="brushSizeLabel" text="15" />
                 <Canvas fx:id="CanvasExample" height="105.0" width="105.0" />
-                <ColorPicker fx:id="colorPicker" editable="true" onAction="#setColor" />
-                <Slider fx:id="SliderScale" blockIncrement="1.0" cache="true" max="10.0" min="1.0" onMouseClicked="#onScrollScale" onMouseDragged="#onScrollScale" onMousePressed="#onScrollScale" onMouseReleased="#onScrollScale" onScroll="#onScrollScale" prefHeight="18.0" prefWidth="223.0" value="1.0">
+            <VBox prefHeight="112.0" prefWidth="144.0">
+               <children>
+                      <ColorPicker fx:id="colorPicker" editable="true" onAction="#setColor" promptText="Color" />
+                  <CheckBox alignment="BOTTOM_CENTER" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#setFigureFilling" text="Filled figure" />
+                  <ColorPicker fx:id="colorOfFillingPicker" editable="true" onAction="#setFillingColor" />
+               </children>
+            </VBox>
+                <Slider fx:id="SliderScale" blockIncrement="1.0" cache="true" max="10.0" min="1.0" onMouseClicked="#onScrollScale" onMouseDragged="#onScrollScale" onMousePressed="#onScrollScale" onMouseReleased="#onScrollScale" onScroll="#onScrollScale" prefHeight="18.0" prefWidth="185.0" value="1.0">
                     <opaqueInsets>
                         <Insets />
                     </opaqueInsets>
                 </Slider>
             <Label fx:id="scaleSizeLable" text="1" />
+            <Label text="Zoom" />
             </ToolBar>
         </VBox>
     </top>

@@ -7,19 +7,18 @@ import java.io.Serializable;
 
 public abstract class Figure implements Serializable {
     double startingX,startingY,endX,endY;
-    boolean isFilled;
-    String color;
+    Paint colorOfStroke;
     double size;
     public static GraphicsContext graphicsContext;
     public static double xOffSet , yOffSet;
 
-    public Figure(double startingX, double startingY, double endX, double endY , double size, Paint color) {
+    public Figure(double startingX, double startingY, double endX, double endY , double size, Paint colorOfStroke) {
         this.startingX = startingX;
         this.startingY = startingY;
         this.endX = endX;
         this.endY = endY;
         this.size = size;
-        this.color = color.toString();
+        this.colorOfStroke = colorOfStroke;
         draw(graphicsContext);
     }
 

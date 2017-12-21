@@ -28,12 +28,12 @@ public class RoundRectTool extends Tool {
     public void getOnMouseDragged(MouseEvent event) {
         graphicsContext.clearRect(0,0,1920,1080);
         Controller.repaintCanvas();
-        new RoundRect(x0,y0,(event.getX()+Figure.xOffSet)/Controller.scaleSize,(event.getY()+Figure.yOffSet)/Controller.scaleSize,size,color);
+        new RoundRect(x0,y0,(event.getX()+Figure.xOffSet)/Controller.scaleSize,(event.getY()+Figure.yOffSet)/Controller.scaleSize,size,colorOfStroke,Controller.colorOfFilling,Controller.isFilling);
     }
 
     @Override
     public void getOnMouseReleased(MouseEvent event) {
+        Controller.addFigure(new RoundRect(x0,y0,(event.getX()+Figure.xOffSet)/Controller.scaleSize,(event.getY()+Figure.yOffSet)/Controller.scaleSize,size,colorOfStroke,Controller.colorOfFilling,Controller.isFilling));
         Controller.repaintCanvas();
-        Controller.addFigure(new RoundRect(x0,y0,(event.getX()+Figure.xOffSet)/Controller.scaleSize,(event.getY()+Figure.yOffSet)/Controller.scaleSize,size,color));
     }
 }
