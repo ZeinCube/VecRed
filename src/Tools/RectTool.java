@@ -1,6 +1,7 @@
 package Tools;
 
 import Figures.Figure;
+import Figures.Point;
 import Figures.Rect;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
@@ -15,24 +16,25 @@ public class RectTool extends Tool{
         button.setPrefHeight(70);
         button.setPrefWidth(70);
         button.setText("Rect");
+        isFillingTool = true;
     }
 
     @Override
     public void getOnMousePressed(MouseEvent event) {
-        x0 = (event.getX()+Figure.xOffSet)/Controller.scaleSize;
-        y0 = (event.getY()+Figure.yOffSet)/Controller.scaleSize;
+        start = Figure.canvasToScreen(new Point(event.getX(),event.getY()));
     }
 
     @Override
     public void getOnMouseDragged(MouseEvent event) {
         graphicsContext.clearRect(0,0,1920,1080);
+        end = Figure.canvasToScreen(new Point(event.getX(),event.getY()));
         Controller.repaintCanvas();
-        new Rect(x0,y0,(event.getX()+Figure.xOffSet)/Controller.scaleSize,(event.getY()+Figure.yOffSet)/Controller.scaleSize,size, colorOfStroke,Controller.colorOfFilling,Controller.isFilling);
+        new Rect(start,end,size, colorOfStroke,Controller.colorOfFilling,Controller.isFilling);
     }
 
     @Override
     public void getOnMouseReleased(MouseEvent event) {
-        Controller.addFigure(new Rect(x0,y0,(event.getX()+Figure.xOffSet)/Controller.scaleSize,(event.getY()+Figure.yOffSet)/Controller.scaleSize,size, colorOfStroke,Controller.colorOfFilling,Controller.isFilling));
+        Controller.addFigure(new Rect(start,end,size, colorOfStroke,Controller.colorOfFilling,Controller.isFilling));
         Controller.repaintCanvas();
 
     }

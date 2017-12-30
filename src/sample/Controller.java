@@ -27,6 +27,7 @@ public class Controller {
     public Label scaleSizeLable;
     public Slider SliderScale;
     public ColorPicker colorOfFillingPicker;
+    public CheckBox checkBox;
 
     @FXML
     private GraphicsContext exampleBrush;
@@ -59,7 +60,7 @@ public class Controller {
 
     private Tool currentTool;
     public static int size;
-    public static boolean isFilling;
+    public static boolean isFilling = false;
     public static Paint colorOfFilling = Color.BLACK;
 
     public void onExit() {
@@ -80,9 +81,10 @@ public class Controller {
         colorOfFillingPicker.setValue(Color.BLACK);
         setFillingColor();
         colorOfFillingPicker.setVisible(false);
+        checkBox.setVisible(false);
         currentTool = new Pen(canvas);
         Figure.graphicsContext = canvas.getGraphicsContext2D();
-        new OvalTool(canvas);
+        new EllipseTool(canvas);
         new RectTool(canvas);
         new LineTool(canvas);
         new Hand(canvas);
@@ -106,6 +108,8 @@ public class Controller {
                 currentTool = tool;
                 currentTool.setSize(size);
                 currentTool.setColorOfStroke(colorPicker.getValue());
+                checkBox.setVisible(tool.isFillingTool);
+                colorOfFillingPicker.setVisible(tool.isFillingTool&isFilling);
             });
             toolBar.getItems().add(tool.button);
         }

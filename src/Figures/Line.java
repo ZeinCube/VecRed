@@ -5,9 +5,21 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.StrokeLineCap;
 import sample.Controller;
 
+import java.util.List;
+
 public class Line extends Figure {
-    public Line(double startingX, double startingY, double endX, double endY, double size, Paint colorOfStroke) {
-        super(startingX,startingY,endX,endY, size,colorOfStroke);
+    public Line(Point start,Point end, double size, Paint colorOfStroke) {
+        super(start,end, size,colorOfStroke);
+    }
+
+    @Override
+    public boolean isContainPoint(Point p) {
+        return false;
+    }
+
+    @Override
+    public void drawSelection() {
+
     }
 
     @Override
@@ -15,6 +27,8 @@ public class Line extends Figure {
         graphicsContext.setLineWidth(size*Controller.scaleSize);
         graphicsContext.setStroke(colorOfStroke);
         graphicsContext.setLineCap(StrokeLineCap.ROUND);
-        graphicsContext.strokeLine(startingX*Controller.scaleSize-Figure.xOffSet,startingY*Controller.scaleSize-Figure.yOffSet,endX*Controller.scaleSize-Figure.xOffSet,endY*Controller.scaleSize-Figure.yOffSet);
+        Point canvSt = inputToCanvas(start);
+        Point canvEnd = inputToCanvas(end);
+        graphicsContext.strokeLine(canvSt.x,canvSt.y,canvEnd.x,canvEnd.y);
     }
 }

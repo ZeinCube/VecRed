@@ -36,7 +36,7 @@
             <VBox prefHeight="112.0" prefWidth="144.0">
                <children>
                       <ColorPicker fx:id="colorPicker" editable="true" onAction="#setColor" promptText="Color" />
-                  <CheckBox alignment="BOTTOM_CENTER" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#setFigureFilling" text="Filled figure" />
+                  <CheckBox fx:id="checkBox" alignment="BOTTOM_CENTER" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#setFigureFilling" text="Filled figure" />
                   <ColorPicker fx:id="colorOfFillingPicker" editable="true" onAction="#setFillingColor" />
                </children>
             </VBox>
@@ -51,9 +51,12 @@
         </VBox>
     </top>
    <center>
-        <Canvas fx:id="canvas" height="1080.0" onMouseDragged="#canvasOnMouseDragged" onMousePressed="#canvasOnMousePressed" onMouseReleased="#canvasOnMouseReleased" width="1920.0" BorderPane.alignment="CENTER">
+        <Canvas fx:id="canvas" height="1080.0" onMouseDragged="#canvasOnMouseDragged" onMousePressed="#canvasOnMousePressed" onMouseReleased="#canvasOnMouseReleased" width="1920.0" BorderPane.alignment="BOTTOM_CENTER">
             <cursor>
                 <Cursor fx:constant="CROSSHAIR" />
-            </cursor></Canvas>
+            </cursor>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin></Canvas>
    </center>
 </BorderPane>

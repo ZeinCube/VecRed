@@ -1,7 +1,7 @@
 package Tools;
 
 import Figures.Figure;
-import Figures.Rect;
+import Figures.Point;
 import Figures.RoundRect;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
@@ -16,24 +16,25 @@ public class RoundRectTool extends Tool {
         button.setPrefHeight(70);
         button.setPrefWidth(110);
         button.setText("RoundedRect");
+        isFillingTool = true;
     }
 
     @Override
     public void getOnMousePressed(MouseEvent event) {
-        x0 = (event.getX()+Figure.xOffSet)/Controller.scaleSize;
-        y0 = (event.getY()+Figure.yOffSet)/Controller.scaleSize;
+        start = Figure.canvasToScreen(new Point(event.getX(),event.getY()));
     }
 
     @Override
     public void getOnMouseDragged(MouseEvent event) {
+        end = Figure.canvasToScreen(new Point(event.getX(),event.getY()));
         graphicsContext.clearRect(0,0,1920,1080);
         Controller.repaintCanvas();
-        new RoundRect(x0,y0,(event.getX()+Figure.xOffSet)/Controller.scaleSize,(event.getY()+Figure.yOffSet)/Controller.scaleSize,size,colorOfStroke,Controller.colorOfFilling,Controller.isFilling);
+        new RoundRect(start,end,size, colorOfStroke,Controller.colorOfFilling,Controller.isFilling);
     }
 
     @Override
     public void getOnMouseReleased(MouseEvent event) {
-        Controller.addFigure(new RoundRect(x0,y0,(event.getX()+Figure.xOffSet)/Controller.scaleSize,(event.getY()+Figure.yOffSet)/Controller.scaleSize,size,colorOfStroke,Controller.colorOfFilling,Controller.isFilling));
+        Controller.addFigure(new RoundRect(start,end,size, colorOfStroke,Controller.colorOfFilling,Controller.isFilling));
         Controller.repaintCanvas();
     }
 }

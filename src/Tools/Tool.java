@@ -1,5 +1,6 @@
 package Tools;
 
+import Figures.Point;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -10,10 +11,12 @@ import sample.Controller;
 
 public abstract class Tool {
     double x0, y0 , size;
+    Point start,end;
     Canvas canvas;
     GraphicsContext graphicsContext;
     Paint colorOfStroke;
     public Button button;
+    public boolean isFillingTool = false;
 
     public Tool(Canvas canvas) {
         this.canvas = canvas;

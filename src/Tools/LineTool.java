@@ -2,6 +2,7 @@ package Tools;
 
 import Figures.Figure;
 import Figures.Line;
+import Figures.Point;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
@@ -19,21 +20,21 @@ public class LineTool extends Tool {
 
     @Override
     public void getOnMousePressed(MouseEvent event) {
-        x0 = (event.getX()+Figure.xOffSet)/Controller.scaleSize;
-        y0 = (event.getY()+Figure.yOffSet)/Controller.scaleSize;
+       start = Figure.canvasToScreen(new Point(event.getX(),event.getY()));
     }
 
     @Override
     public void getOnMouseDragged(MouseEvent event) {
+        end = Figure.canvasToScreen(new Point(event.getX(),event.getY()));
         graphicsContext.clearRect(0,0,1920,1080);
         Controller.repaintCanvas();
-        new Line(x0,y0,(event.getX()+Figure.xOffSet)/Controller.scaleSize,(event.getY()+Figure.yOffSet)/Controller.scaleSize,size, colorOfStroke);
+        new Line(start,end,size, colorOfStroke);
     }
 
     @Override
     public void getOnMouseReleased(MouseEvent event) {
         graphicsContext.clearRect(0,0,1920,1080);
         Controller.repaintCanvas();
-        Controller.addFigure(new Line(x0,y0,(event.getX()+Figure.xOffSet)/Controller.scaleSize,(event.getY()+Figure.yOffSet)/Controller.scaleSize,size, colorOfStroke));
+        Controller.addFigure(new Line(start,end,size, colorOfStroke));
     }
 }
