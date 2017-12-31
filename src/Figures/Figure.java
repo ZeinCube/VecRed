@@ -8,8 +8,11 @@ import sample.Controller;
 import java.io.Serializable;
 
 public abstract class Figure implements Serializable {
-    Paint colorOfStroke;
-    double size;
+    public boolean isFillingFigure;
+    public Paint colorOfFilling;
+    public Paint colorOfStroke;
+    public boolean isFilled = false;
+    public double size;
     public static GraphicsContext graphicsContext;
     Point start , end;
     public boolean isSelected;
@@ -27,6 +30,8 @@ public abstract class Figure implements Serializable {
     }
 
     public abstract boolean isContainPoint(Point p);
+
+    public abstract boolean isIntersecting(Point starts, Point ends);
 
     public static void setOffSet(double x,double y){
         xOffSet = x;
@@ -47,14 +52,13 @@ public abstract class Figure implements Serializable {
     public void drawSelection() {
         Point canvSt = inputToCanvas(start);
         Point canvEnd = inputToCanvas(end);
-        graphicsContext.setLineWidth(1);
-        graphicsContext.setStroke(Color.BLUE);
-        graphicsContext.strokeRect(Math.min(canvSt.x,canvEnd.x)-size/2,Math.min(canvSt.y,canvEnd.y)-size/2,Math.abs(canvSt.x-canvEnd.x)+(size*Controller.scaleSize),Math.abs(canvSt.y-canvEnd.y)+(size*Controller.scaleSize));
+        graphicsContext.setLineWidth(3);
+        graphicsContext.setStroke(Color.ROYALBLUE);
+        graphicsContext.strokeRect(Math.min(canvSt.x,canvEnd.x)-(size*Controller.scaleSize)/2,Math.min(canvSt.y,canvEnd.y)-(size*Controller.scaleSize)/2,Math.abs(canvSt.x-canvEnd.x)+(size*Controller.scaleSize),Math.abs(canvSt.y-canvEnd.y)+(size*Controller.scaleSize));
     }
 
     public Point inputToCanvas(Point p){
         return new Point(p.x*Controller.scaleSize - Figure.xOffSet,p.y*Controller.scaleSize - Figure.yOffSet);
-
     }
 
     public static Point canvasToScreen(Point p){
@@ -62,4 +66,5 @@ public abstract class Figure implements Serializable {
     }
 
     public abstract void draw(GraphicsContext graphicsContext);
+
 }

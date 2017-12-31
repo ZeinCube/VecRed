@@ -7,6 +7,9 @@ import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import sample.Controller;
 
+import static sample.Controller.height;
+import static sample.Controller.widht;
+
 public class EllipseTool extends Tool{
     public EllipseTool(Canvas canvas) {
         super(canvas);
@@ -21,11 +24,12 @@ public class EllipseTool extends Tool{
     @Override
     public void getOnMousePressed(MouseEvent event) {
         start = Figure.canvasToScreen(new Point(event.getX(),event.getY()));
+        end = null;
     }
 
     @Override
     public void getOnMouseDragged(MouseEvent event) {
-        graphicsContext.clearRect(0,0,1920,1080);
+        graphicsContext.clearRect(0,0,widht,height);
         Controller.repaintCanvas();
         end = Figure.canvasToScreen(new Point(event.getX(),event.getY()));
         new Ellipse(start,end,size, colorOfStroke,Controller.colorOfFilling,Controller.isFilling);
@@ -33,8 +37,9 @@ public class EllipseTool extends Tool{
 
     @Override
     public void getOnMouseReleased(MouseEvent event) {
-        end = Figure.canvasToScreen(new Point(event.getX(),event.getY()));
-        Controller.addFigure(new Ellipse(start,end,size, colorOfStroke,Controller.colorOfFilling,Controller.isFilling));
-        Controller.repaintCanvas();
+        if(end!=null) {
+            Controller.addFigure(new Ellipse(start, end, size, colorOfStroke, Controller.colorOfFilling, Controller.isFilling));
+            Controller.repaintCanvas();
+        }
     }
 }

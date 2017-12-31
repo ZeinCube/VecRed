@@ -8,12 +8,16 @@ import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuBar;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.stage.FileChooser;
 
+import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -29,17 +33,25 @@ public class Controller {
     public ColorPicker colorOfFillingPicker;
     public CheckBox checkBox;
 
-    @FXML
-    private GraphicsContext exampleBrush;
+    public Label PropertySize;
+    public ColorPicker paramColorOfStroke;
+    public CheckBox PropertyFilled;
+    public VBox BoxColorOfFiling;
+    public Slider sizeOfPropertyBrush;
+    public ColorPicker colorOfFillingParamPicker;
+    public VBox Parameters;
+    public static Label staticPropertySize;
+    public static ColorPicker staticParamColorOfStroke;
+    public static CheckBox staticPropertyFilled;
+    public static VBox staticBoxColorOfFiling;
+    public static ColorPicker staticColorOfFillingParam;
+    public static Slider staticSizeOfPropertyBrush;
+    public static VBox staticParameters;
 
-    @FXML
-    private Canvas CanvasExample;
+
 
     @FXML
     private Label brushSizeLabel;
-
-    @FXML
-    private MenuBar menuBar;
 
     @FXML
     private Canvas canvas;
@@ -54,14 +66,18 @@ public class Controller {
     private Slider brushSize;
 
     public static Double scaleSize = 1.0;
-    public static List<Figure> figures = new LinkedList<>();
+    public static List<Figure> figures = new ArrayList<>();
     private GraphicsContext graphicsContext;
     public static List<Tool> toolList = new ArrayList<>();
 
     private Tool currentTool;
     public static int size;
     public static boolean isFilling = false;
+    public static boolean isFillingParam;
     public static Paint colorOfFilling = Color.BLACK;
+    public static int height = Toolkit.getDefaultToolkit().getScreenSize().height;
+    public static int widht = Toolkit.getDefaultToolkit().getScreenSize().width;
+
 
     public void onExit() {
         Platform.exit();
@@ -70,8 +86,6 @@ public class Controller {
     public void getSize(){
         size = (int)brushSize.getValue();
         brushSizeLabel.setText(String.valueOf(size));
-        exampleBrush.clearRect(0, 0,105, 105);
-        exampleBrush.fillRoundRect(52-size/2, 52-size/2, size,size,size, size);
         currentTool.setSize(size);
     }
 
@@ -94,11 +108,24 @@ public class Controller {
         getSize();
         setColor();
         canvas.toBack();
+        initparams();
+        History.init();
+    }
+
+    public void initparams(){
+        staticColorOfFillingParam = colorOfFillingParamPicker;
+        staticBoxColorOfFiling = BoxColorOfFiling;
+        staticParamColorOfStroke = paramColorOfStroke;
+        staticPropertySize = PropertySize;
+        staticPropertyFilled = PropertyFilled;
+        staticPropertySize = PropertySize;
+        staticSizeOfPropertyBrush = sizeOfPropertyBrush;
+        staticParameters = Parameters;
     }
 
     public void onScrollScale() {
         scaleSize = SliderScale.getValue();
-        graphicsContext.clearRect(0,0,1920,1080);
+        graphicsContext.clearRect(0,0,widht,height);
         repaintCanvas();
         scaleSizeLable.setText(String.valueOf(Math.round(SliderScale.getValue())));
     }
@@ -118,14 +145,12 @@ public class Controller {
     private void getGraphCont(){
         Figure.graphicsContext = canvas.getGraphicsContext2D();
         graphicsContext = canvas.getGraphicsContext2D();
-        exampleBrush = CanvasExample.getGraphicsContext2D();
     }
 
     public void setColor() {
         currentTool.setColorOfStroke(colorPicker.getValue());
         canvas.getGraphicsContext2D().setFill(colorPicker.getValue());
         canvas.getGraphicsContext2D().setStroke(colorPicker.getValue());
-        exampleBrush.setFill(colorPicker.getValue());
         getSize();
     }
 
@@ -139,9 +164,7 @@ public class Controller {
         figures.add(figure);
     }
 
-    public void canvasOnMousePressed(MouseEvent event) {
-        currentTool.getOnMousePressed(event);
-    }
+    public void canvasOnMousePressed(MouseEvent event) { currentTool.getOnMousePressed(event);}
 
     public void canvasOnMouseDragged(MouseEvent event) {
         currentTool.getOnMouseDragged(event);
@@ -149,6 +172,8 @@ public class Controller {
 
     public void canvasOnMouseReleased(MouseEvent event) {
         currentTool.getOnMouseReleased(event);
+        if(!currentTool.button.getText().equals("Selection"))
+        History.rememberCondition();
     }
 
     public void saveFile(ActionEvent actionEvent) {
@@ -214,7 +239,7 @@ public class Controller {
                 } catch (IOException ignored) {
                 }
             }
-            graphicsContext.clearRect(0, 0, 1920, 1080);
+            graphicsContext.clearRect(0,0,widht,height);
             repaintCanvas();
     }
     }
@@ -227,10 +252,122 @@ public class Controller {
             isFilling = true;
             colorOfFillingPicker.setVisible(true);
         }
+        History.rememberCondition();
     }
 
     public void setFillingColor() {
         colorOfFilling = colorOfFillingPicker.getValue();
     }
 
+    public void copy(ActionEvent actionEvent) {
+        for(Figure figure : figures){
+            if(figure.isSelected){
+
+            }
+        }
+    }
+
+    public void paste(ActionEvent actionEvent) {
+
+        History.rememberCondition();
+
+    }
+
+    public void cut(ActionEvent actionEvent) {
+
+        History.rememberCondition();
+    }
+
+    public void deleteSelectedShape(ActionEvent actionEvent) {
+        for(int i = 0;i<=figures.size()-1;i++){
+            if(figures.get(i).isSelected) {
+                figures.remove(i);
+                i--;
+            }
+            graphicsContext.clearRect(0,0,widht,height);
+            repaintCanvas();
+        }
+        hideParams();
+        History.rememberCondition();
+    }
+
+    public void setColorOfShape() {
+        for(Figure figure : figures){
+            if(figure.isSelected)
+                figure.colorOfStroke = paramColorOfStroke.getValue();
+        }
+        graphicsContext.clearRect(0,0,widht,height);
+        repaintCanvas();
+        History.rememberCondition();
+    }
+
+    public void setSizeOfBrush() {
+        PropertySize.setText(String.valueOf(sizeOfPropertyBrush.getValue()));
+        for(Figure figure : figures){
+            if(figure.isSelected)
+                figure.size = sizeOfPropertyBrush.getValue();
+            graphicsContext.clearRect(0,0,widht,height);
+            repaintCanvas();
+        }
+        History.rememberCondition();
+    }
+
+    public void setParamFilling() {
+        isFillingParam = !isFillingParam;
+        BoxColorOfFiling.setVisible(isFillingParam);
+        for (Figure figure : figures) {
+            if (figure.isSelected & figure.isFillingFigure) {
+                figure.isFilled = isFillingParam;
+                figure.colorOfFilling = colorOfFillingParamPicker.getValue();
+            }
+        }
+        graphicsContext.clearRect(0,0,widht,height);
+        repaintCanvas();
+        History.rememberCondition();
+    }
+
+    public void setColorOfFillingParam() {
+        for (Figure figure : figures){
+            if(figure.isSelected&figure.isFillingFigure){
+                figure.colorOfFilling = colorOfFillingParamPicker.getValue();
+            }
+            graphicsContext.clearRect(0,0,widht,height);
+            repaintCanvas();
+        }
+        History.rememberCondition();
+    }
+
+    public static void showParams(){
+        isFillingParam = Selection.isFilled;
+        staticParamColorOfStroke.setValue(Selection.colorOfShape);
+        if(Selection.isSameSize) {
+            staticPropertySize.setText(String.valueOf(Selection.sizeOfBrush));
+            staticSizeOfPropertyBrush.setValue(Selection.sizeOfBrush);
+        }
+        staticBoxColorOfFiling.setVisible(Selection.isFilled);
+        staticPropertyFilled.setSelected(Selection.isFilled);
+        staticColorOfFillingParam.setValue(Selection.colorOfFilling);
+        staticPropertyFilled.setVisible(Selection.isFillingFigure);
+        staticParameters.setVisible(true);
+    }
+
+    public static void hideParams(){
+        staticParameters.setVisible(false);
+    }
+
+    public void undo() {
+        History.undo();
+    }
+
+    public void redo() {
+        History.redo();
+    }
+
+    public void getSizeFinal(MouseEvent event) {
+        History.rememberCondition();
+    }
+
+    public void onScrollScaleFinal(MouseEvent event) {
+        History.rememberCondition();
+    }
 }

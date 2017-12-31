@@ -12,21 +12,20 @@ import sample.Controller;
 public abstract class Tool {
     double x0, y0 , size;
     Point start,end;
-    Canvas canvas;
+    static public Canvas canvas;
     GraphicsContext graphicsContext;
     Paint colorOfStroke;
     public Button button;
     public boolean isFillingTool = false;
 
     public Tool(Canvas canvas) {
-        this.canvas = canvas;
+        Tool.canvas = canvas;
         Controller.toolList.add(this);
     }
 
     public abstract void getOnMousePressed(MouseEvent event);
-    public abstract void getOnMouseDragged(MouseEvent event);
     public abstract void getOnMouseReleased(MouseEvent event);
-
+    public abstract void getOnMouseDragged(MouseEvent event);
 
     public void setSize(double size){
         this.size = size;

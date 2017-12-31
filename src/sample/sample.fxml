@@ -11,8 +11,11 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="768.0" minWidth="1200.0" prefHeight="768.0" prefWidth="1308.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
     <top>
@@ -23,6 +26,36 @@
                     <MenuItem onAction="#openFile" text="Open file" />
                     <MenuItem onAction="#onExit" text="Exit" />
                 </Menu>
+            <Menu mnemonicParsing="false" text="Shapes">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#copy" text="Copy">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="C" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                  <MenuItem mnemonicParsing="false" onAction="#paste" text="Paste">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="V" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                  <MenuItem mnemonicParsing="false" onAction="#cut" text="Cut" />
+                  <MenuItem mnemonicParsing="false" onAction="#deleteSelectedShape" text="Delete">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="DELETE" control="UP" meta="UP" shift="UP" shortcut="ANY" />
+                     </accelerator>
+                  </MenuItem>
+                  <MenuItem mnemonicParsing="false" onAction="#undo" text="Undo">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="Z" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                  <MenuItem mnemonicParsing="false" onAction="#redo" text="Redo">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="Z" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+              </items>
+            </Menu>
                 <Menu mnemonicParsing="false" text="Help">
                     <items>
                         <MenuItem mnemonicParsing="false" text="About" />
@@ -30,9 +63,8 @@
                 </Menu>
             </MenuBar>
             <ToolBar fx:id="toolBar" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="126.0" prefWidth="1920.0">
-                <Slider fx:id="brushSize" min="1.0" onMouseClicked="#getSize" onMouseDragged="#getSize" onMousePressed="#getSize" onMouseReleased="#getSize" onScroll="#getSize" value="15.0" />
+                <Slider fx:id="brushSize" min="1.0" onMouseClicked="#getSize" onMouseDragged="#getSize" onMousePressed="#getSize" onMouseReleased="#getSizeFinal" onScroll="#getSize" value="15.0" />
                 <Label fx:id="brushSizeLabel" text="15" />
-                <Canvas fx:id="CanvasExample" height="105.0" width="105.0" />
             <VBox prefHeight="112.0" prefWidth="144.0">
                <children>
                       <ColorPicker fx:id="colorPicker" editable="true" onAction="#setColor" promptText="Color" />
@@ -40,7 +72,7 @@
                   <ColorPicker fx:id="colorOfFillingPicker" editable="true" onAction="#setFillingColor" />
                </children>
             </VBox>
-                <Slider fx:id="SliderScale" blockIncrement="1.0" cache="true" max="10.0" min="1.0" onMouseClicked="#onScrollScale" onMouseDragged="#onScrollScale" onMousePressed="#onScrollScale" onMouseReleased="#onScrollScale" onScroll="#onScrollScale" prefHeight="18.0" prefWidth="185.0" value="1.0">
+                <Slider fx:id="SliderScale" blockIncrement="1.0" cache="true" max="10.0" min="1.0" onMouseClicked="#onScrollScale" onMouseDragged="#onScrollScale" onMousePressed="#onScrollScale" onMouseReleased="#onScrollScaleFinal" onScroll="#onScrollScale" prefHeight="18.0" prefWidth="185.0" value="1.0">
                     <opaqueInsets>
                         <Insets />
                     </opaqueInsets>
@@ -59,4 +91,56 @@
             <Insets />
          </BorderPane.margin></Canvas>
    </center>
+   <left>
+      <VBox fx:id="Parameters" prefHeight="610.0" prefWidth="218.0" visible="false" BorderPane.alignment="CENTER">
+         <children>
+            <VBox prefHeight="300.0" prefWidth="218.0">
+               <VBox.margin>
+                  <Insets top="150.0" />
+               </VBox.margin>
+               <children>
+                  <Label alignment="TOP_CENTER" prefHeight="33.0" prefWidth="218.0" text="Properties" textAlignment="CENTER">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <HBox prefHeight="30.0" prefWidth="218.0">
+                     <children>
+                        <Label prefHeight="33.0" prefWidth="49.0" text="Color" />
+                        <ColorPicker fx:id="paramColorOfStroke" onAction="#setColorOfShape" prefHeight="31.0" prefWidth="168.0">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </ColorPicker>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="33.0" prefWidth="218.0">
+                     <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="33.0" prefWidth="128.0" text="Size of Brush" textAlignment="CENTER" />
+                        <Label fx:id="PropertySize" alignment="CENTER" contentDisplay="CENTER" prefHeight="33.0" prefWidth="63.0" />
+                     </children>
+                  </HBox>
+                  <Slider fx:id="sizeOfPropertyBrush" min="1.0" onMouseClicked="#setSizeOfBrush" onMouseDragged="#setSizeOfBrush" />
+                  <HBox prefHeight="35.0" prefWidth="218.0">
+                     <children>
+                        <CheckBox fx:id="PropertyFilled" mnemonicParsing="false" onAction="#setParamFilling" prefHeight="36.0" prefWidth="145.0" text="Filled">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </CheckBox>
+                     </children>
+                  </HBox>
+                  <VBox fx:id="BoxColorOfFiling" prefHeight="66.0" prefWidth="218.0" visible="false">
+                     <children>
+                        <Label prefHeight="34.0" prefWidth="218.0" text="Color Of Filling" />
+                        <ColorPicker fx:id="colorOfFillingParamPicker" onAction="#setColorOfFillingParam" prefHeight="31.0" prefWidth="218.0" />
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+         </children></VBox>
+   </left>
 </BorderPane>

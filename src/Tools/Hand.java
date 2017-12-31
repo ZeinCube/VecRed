@@ -6,6 +6,9 @@ import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import sample.Controller;
 
+import static sample.Controller.height;
+import static sample.Controller.widht;
+
 public class Hand extends Tool{
     public Hand(Canvas canvas) {
         super(canvas);
@@ -26,7 +29,7 @@ public class Hand extends Tool{
     public void getOnMouseDragged(MouseEvent event) {
         Figure.xOffSet = x0-event.getX();
         Figure.yOffSet = y0-event.getY();
-        graphicsContext.clearRect(0,0,1920,1080);
+        graphicsContext.clearRect(0,0,widht,height);
         Controller.repaintCanvas();
     }
 
