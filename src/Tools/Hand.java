@@ -12,7 +12,6 @@ import static sample.Controller.widht;
 public class Hand extends Tool{
     public Hand(Canvas canvas) {
         super(canvas);
-        graphicsContext = canvas.getGraphicsContext2D();
         button = new Button();
         button.setPrefHeight(70);
         button.setPrefWidth(70);

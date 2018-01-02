@@ -14,7 +14,6 @@ import static sample.Controller.widht;
 public class RectTool extends Tool{
     public RectTool(Canvas canvas) {
         super(canvas);
-        this.graphicsContext = canvas.getGraphicsContext2D();
         button = new Button();
         button.setPrefHeight(70);
         button.setPrefWidth(70);

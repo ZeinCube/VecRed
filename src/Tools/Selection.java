@@ -7,7 +7,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import sample.Controller;
 
 import static sample.Controller.height;
@@ -25,10 +24,10 @@ public class Selection extends Tool {
     private static boolean isSameColorOfFilling = true;
     private static boolean isRememberedParams = false;
     private static boolean haveSelectedFigure = false;
+    public static Button movingTool;
 
     public Selection(Canvas canvas) {
         super(canvas);
-        graphicsContext = canvas.getGraphicsContext2D();
         button = new Button();
         button.setPrefHeight(70);
         button.setPrefWidth(70);
@@ -60,7 +59,7 @@ public class Selection extends Tool {
         if(!isSameColorOfFilling){
             colorOfFilling = Color.BLACK;
         }
-        isSameSize = isSameSize&Controller.figures.get(index).size==sizeOfBrush;
+        isSameSize = isSameSize&Controller.figures.get(index).sizeOfBrush ==sizeOfBrush;
         if(!isSameSize)
             sizeOfBrush = 15;
     }
@@ -85,7 +84,7 @@ public class Selection extends Tool {
                     Controller.figures.get(Controller.figures.size()-i-1).setSelected(true);
                     if(!isRememberedParams) {
                         Figure currentFigure = Controller.figures.get(Controller.figures.size()-i-1);
-                        rememberFirstParams(Color.valueOf(currentFigure.colorOfStroke.toString()), currentFigure.isFillingFigure, currentFigure.isFilled, Color.valueOf(currentFigure.colorOfFilling.toString()), currentFigure.size);
+                        rememberFirstParams(Color.valueOf(currentFigure.colorOfStroke.toString()), currentFigure.isFillingFigure, currentFigure.isFilled, Color.valueOf(currentFigure.colorOfFilling.toString()), currentFigure.sizeOfBrush);
                     }
                     i++;
                     for(int i1 = i;i1<Controller.figures.size();i1++)
@@ -101,7 +100,7 @@ public class Selection extends Tool {
                     Controller.figures.get(Controller.figures.size()-i-1).setSelected(true);
                     if(!isRememberedParams){
                         Figure currentFigure = Controller.figures.get(Controller.figures.size()-i-1);
-                        rememberFirstParams(Color.valueOf(currentFigure.colorOfStroke.toString()), currentFigure.isFillingFigure, currentFigure.isFilled, Color.valueOf(currentFigure.colorOfFilling.toString()), currentFigure.size);
+                        rememberFirstParams(Color.valueOf(currentFigure.colorOfStroke.toString()), currentFigure.isFillingFigure, currentFigure.isFilled, Color.valueOf(currentFigure.colorOfFilling.toString()), currentFigure.sizeOfBrush);
                     }else{
                         rememberParams(Controller.figures.size()-i-1);
                     }
@@ -111,6 +110,7 @@ public class Selection extends Tool {
             }
         }
         isSelectedByRect = false;
+        movingTool.setDisable(!haveSelectedFigure);
         if(haveSelectedFigure) {
             Controller.showParams();
         }else{

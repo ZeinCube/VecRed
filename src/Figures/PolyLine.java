@@ -12,13 +12,13 @@ import java.util.LinkedList;
 
 
 public class PolyLine extends Figure{
-    private LinkedList<Point> points = new LinkedList<>();
+    public LinkedList<Point> points = new LinkedList<>();
 
     public PolyLine(LinkedList<Point> points , Paint color,double size){
         isFillingFigure = false;
         this.colorOfStroke = color;
         this.points = points;
-        this.size = size;
+        this.sizeOfBrush = size;
         this.colorOfFilling = colorOfStroke;
         draw(graphicsContext);
     }
@@ -32,7 +32,7 @@ public class PolyLine extends Figure{
     public boolean isContainPoint(Point p){
         Polyline polyline = new Polyline();
         polyline.getPoints().addAll(returnPoints());
-        polyline.setStrokeWidth(size*Controller.scaleSize);
+        polyline.setStrokeWidth(sizeOfBrush *Controller.scaleSize);
         return polyline.contains(new Point2D(p.x,p.y));
     }
 
@@ -40,7 +40,7 @@ public class PolyLine extends Figure{
     public boolean isIntersecting(Point starts, Point ends) {
         Polyline polyline = new Polyline();
         polyline.getPoints().addAll(returnPoints());
-        polyline.setStrokeWidth(size*Controller.scaleSize);
+        polyline.setStrokeWidth(sizeOfBrush *Controller.scaleSize);
         starts = inputToCanvas(starts);
         ends = inputToCanvas(ends);
         return polyline.intersects(starts.x, starts.y,Math.abs(starts.x- ends.x),Math.abs(starts.y- ends.y));
@@ -67,7 +67,7 @@ public class PolyLine extends Figure{
         min = inputToCanvas(min);
         graphicsContext.setLineWidth(3);
         graphicsContext.setStroke(Color.ROYALBLUE);
-        graphicsContext.strokeRect(min.x-size*Controller.scaleSize,min.y-size*Controller.scaleSize,max.x-min.x+size*Controller.scaleSize*2,max.y-min.y+size*Controller.scaleSize*2);
+        graphicsContext.strokeRect(min.x- sizeOfBrush *Controller.scaleSize,min.y- sizeOfBrush *Controller.scaleSize,max.x-min.x+ sizeOfBrush *Controller.scaleSize*2,max.y-min.y+ sizeOfBrush *Controller.scaleSize*2);
     }
 
     public void draw(GraphicsContext graphicsContext){
@@ -82,7 +82,7 @@ public class PolyLine extends Figure{
         graphicsContext.setLineCap(StrokeLineCap.ROUND);
         graphicsContext.setLineJoin(StrokeLineJoin.ROUND);
         graphicsContext.setStroke(colorOfStroke);
-        graphicsContext.setLineWidth(size*Controller.scaleSize);
+        graphicsContext.setLineWidth(sizeOfBrush *Controller.scaleSize);
         graphicsContext.strokePolyline(x, y,points.size());
         if(isSelected){
             drawSelection();

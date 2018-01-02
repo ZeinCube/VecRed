@@ -18,8 +18,8 @@ public class Line extends Figure {
         Point canvSt = inputToCanvas(start);
         Point canvEnd = inputToCanvas(end);
         javafx.scene.shape.Line line = new javafx.scene.shape.Line(canvSt.x,canvSt.y,canvEnd.x,canvEnd.y);
-        line.setStrokeWidth(size*Controller.scaleSize);
-       return line.contains(new Point2D(p.x,p.y));
+        line.setStrokeWidth(sizeOfBrush *Controller.scaleSize);
+        return line.contains(new Point2D(p.x,p.y));
     }
 
     @Override
@@ -29,13 +29,13 @@ public class Line extends Figure {
         starts = inputToCanvas(starts);
         ends = inputToCanvas(ends);
         javafx.scene.shape.Line line = new javafx.scene.shape.Line(canvSt.x,canvSt.y,canvEnd.x,canvEnd.y);
-        line.setStrokeWidth(size*Controller.scaleSize);
+        line.setStrokeWidth(sizeOfBrush *Controller.scaleSize);
         return line.intersects(starts.x, starts.y,Math.abs(starts.x- ends.x),Math.abs(starts.y- ends.y));
     }
 
     @Override
     public void draw(GraphicsContext graphicsContext) {
-        graphicsContext.setLineWidth(size*Controller.scaleSize);
+        graphicsContext.setLineWidth(sizeOfBrush *Controller.scaleSize);
         graphicsContext.setStroke(colorOfStroke);
         graphicsContext.setLineCap(StrokeLineCap.ROUND);
         Point canvSt = inputToCanvas(start);

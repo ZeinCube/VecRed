@@ -1,19 +1,20 @@
 package sample;
 
 import Figures.Figure;
+import Tools.Selection;
 import Tools.Tool;
 
 import java.util.*;
 
 public class History {
 
-    public static List<Condition> history = new ArrayList<>();
+    private static List<Condition> history = new ArrayList<>();
     private static int currentCondition = 0;
 
     public static void rememberCondition(){
         if(currentCondition!=history.size()-1) {
-            for (int i = history.size() - currentCondition; i > 0; i--) {
-                history.remove(history.size() - i);
+            while(history.size()>currentCondition+1){
+                history.remove(history.size()-1);
             }
         }
         history.add(new Condition(Controller.figures, Figure.xOffSet, Figure.yOffSet, Controller.scaleSize));
@@ -27,16 +28,23 @@ public class History {
         }
     }
 
-    public static void init(){
+    static void init(){
         history.add(new Condition(Controller.figures, Figure.xOffSet, Figure.yOffSet, Controller.scaleSize));
     }
 
-    public static void applyCondition(){
+    private static void applyCondition(){
         Condition condition = history.get(currentCondition);
-        Controller.figures = condition.getFigures();
+        Controller.figures = new ArrayList<>();
+        Controller.figures.addAll(condition.getFigures());
         Figure.setOffSet(condition.xOffSet, condition.yOffset);
         Controller.scaleSize = condition.scaleSize;
         Tool.canvas.getGraphicsContext2D().clearRect(0, 0, Controller.widht, Controller.height);
+        Controller.staticSliderScale.setValue(condition.scaleSize);
+        Controller.staticScaleSizeLabel.setText(String.valueOf((int)condition.scaleSize));
+        for (Figure figure : Controller.figures)
+            figure.isSelected = false;
+        Selection.movingTool.setDisable(true);
+        Controller.hideParams();
         Controller.repaintCanvas();
     }
 

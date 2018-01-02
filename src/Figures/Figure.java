@@ -12,16 +12,16 @@ public abstract class Figure implements Serializable {
     public Paint colorOfFilling;
     public Paint colorOfStroke;
     public boolean isFilled = false;
-    public double size;
+    public double sizeOfBrush;
     public static GraphicsContext graphicsContext;
-    Point start , end;
+    public Point start , end;
     public boolean isSelected;
     public static double xOffSet , yOffSet;
 
-    public Figure(Point start , Point end, double size, Paint colorOfStroke) {
+    public Figure(Point start , Point end, double sizeOfBrush, Paint colorOfStroke) {
         this.start = start;
         this.end = end;
-        this.size = size;
+        this.sizeOfBrush = sizeOfBrush;
         this.colorOfStroke = colorOfStroke;
         draw(graphicsContext);
     }
@@ -54,7 +54,7 @@ public abstract class Figure implements Serializable {
         Point canvEnd = inputToCanvas(end);
         graphicsContext.setLineWidth(3);
         graphicsContext.setStroke(Color.ROYALBLUE);
-        graphicsContext.strokeRect(Math.min(canvSt.x,canvEnd.x)-(size*Controller.scaleSize)/2,Math.min(canvSt.y,canvEnd.y)-(size*Controller.scaleSize)/2,Math.abs(canvSt.x-canvEnd.x)+(size*Controller.scaleSize),Math.abs(canvSt.y-canvEnd.y)+(size*Controller.scaleSize));
+        graphicsContext.strokeRect(Math.min(canvSt.x,canvEnd.x)-(sizeOfBrush *Controller.scaleSize)/2,Math.min(canvSt.y,canvEnd.y)-(sizeOfBrush *Controller.scaleSize)/2,Math.abs(canvSt.x-canvEnd.x)+(sizeOfBrush *Controller.scaleSize),Math.abs(canvSt.y-canvEnd.y)+(sizeOfBrush *Controller.scaleSize));
     }
 
     public Point inputToCanvas(Point p){

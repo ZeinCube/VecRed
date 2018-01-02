@@ -19,7 +19,7 @@ public class Rect extends Figure {
     public boolean isContainPoint(Point p) {
         Point canvSt = inputToCanvas(start);
         Point canvEnd = inputToCanvas(end);
-        return new javafx.scene.shape.Rectangle(Math.min(canvSt.x,canvEnd.x)-(size*Controller.scaleSize/2)/2,Math.min(canvSt.y,canvEnd.y)-(size*Controller.scaleSize/2)/2,Math.abs((canvSt).x-(canvEnd).x)+(size*Controller.scaleSize/2),Math.abs((canvSt).y-(canvEnd).y)+(size*Controller.scaleSize/2)).contains(new Point2D(p.x,p.y));
+        return new javafx.scene.shape.Rectangle(Math.min(canvSt.x,canvEnd.x)-(sizeOfBrush *Controller.scaleSize/2)/2,Math.min(canvSt.y,canvEnd.y)-(sizeOfBrush *Controller.scaleSize/2)/2,Math.abs((canvSt).x-(canvEnd).x)+(sizeOfBrush *Controller.scaleSize/2),Math.abs((canvSt).y-(canvEnd).y)+(sizeOfBrush *Controller.scaleSize/2)).contains(new Point2D(p.x,p.y));
     }
 
     @Override
@@ -28,7 +28,7 @@ public class Rect extends Figure {
         Point canvEnd = inputToCanvas(end);
         starts = inputToCanvas(starts);
         ends = inputToCanvas(ends);
-        return new javafx.scene.shape.Rectangle(Math.min(canvSt.x,canvEnd.x)-(size*Controller.scaleSize/2)/2,Math.min(canvSt.y,canvEnd.y)-(size*Controller.scaleSize/2)/2,Math.abs((canvSt).x-(canvEnd).x)+(size*Controller.scaleSize/2),Math.abs((canvSt).y-(canvEnd).y)+(size*Controller.scaleSize/2)).intersects(starts.x, starts.y,Math.abs(starts.x- ends.x),Math.abs(starts.y- ends.y));
+        return new javafx.scene.shape.Rectangle(Math.min(canvSt.x,canvEnd.x)-(sizeOfBrush *Controller.scaleSize/2)/2,Math.min(canvSt.y,canvEnd.y)-(sizeOfBrush *Controller.scaleSize/2)/2,Math.abs((canvSt).x-(canvEnd).x)+(sizeOfBrush *Controller.scaleSize/2),Math.abs((canvSt).y-(canvEnd).y)+(sizeOfBrush *Controller.scaleSize/2)).intersects(starts.x, starts.y,Math.abs(starts.x- ends.x),Math.abs(starts.y- ends.y));
     }
 
     @Override
@@ -37,7 +37,7 @@ public class Rect extends Figure {
         graphicsContext.setStroke(colorOfStroke);
         Point canvSt = inputToCanvas(start);
         Point canvEnd = inputToCanvas(end);
-        graphicsContext.setLineWidth(size*Controller.scaleSize/2);
+        graphicsContext.setLineWidth(sizeOfBrush *Controller.scaleSize/2);
         graphicsContext.setLineJoin(StrokeLineJoin.MITER);
         if(!isFilled){
             graphicsContext.strokeRect(Math.min(canvSt.x,canvEnd.x),Math.min(canvSt.y,canvEnd.y),Math.abs(canvSt.x-canvEnd.x),Math.abs(canvSt.y-canvEnd.y));

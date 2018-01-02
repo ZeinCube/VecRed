@@ -9,7 +9,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuBar;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -20,7 +19,6 @@ import javafx.stage.FileChooser;
 import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 
@@ -28,8 +26,10 @@ public class Controller {
     @FXML
     public BorderPane borderPane;
     public javafx.scene.control.MenuBar MenuBar;
-    public Label scaleSizeLable;
+    public Label scaleSizeLabel;
+    public static Label staticScaleSizeLabel;
     public Slider SliderScale;
+    public static Slider staticSliderScale;
     public ColorPicker colorOfFillingPicker;
     public CheckBox checkBox;
 
@@ -104,6 +104,7 @@ public class Controller {
         new Hand(canvas);
         new RoundRectTool(canvas);
         new Selection(canvas);
+        new MoveFigure(canvas);
         drawToolBut();
         getSize();
         setColor();
@@ -121,13 +122,15 @@ public class Controller {
         staticPropertySize = PropertySize;
         staticSizeOfPropertyBrush = sizeOfPropertyBrush;
         staticParameters = Parameters;
+        staticSliderScale = SliderScale;
+        staticScaleSizeLabel = scaleSizeLabel;
     }
 
     public void onScrollScale() {
         scaleSize = SliderScale.getValue();
         graphicsContext.clearRect(0,0,widht,height);
         repaintCanvas();
-        scaleSizeLable.setText(String.valueOf(Math.round(SliderScale.getValue())));
+        scaleSizeLabel.setText(String.valueOf(Math.round(SliderScale.getValue())));
     }
     private void drawToolBut(){
         for (Tool tool : toolList){
@@ -172,7 +175,7 @@ public class Controller {
 
     public void canvasOnMouseReleased(MouseEvent event) {
         currentTool.getOnMouseReleased(event);
-        if(!currentTool.button.getText().equals("Selection"))
+        if(!currentTool.button.getText().equals("Select"))
         History.rememberCondition();
     }
 
@@ -302,14 +305,13 @@ public class Controller {
     }
 
     public void setSizeOfBrush() {
-        PropertySize.setText(String.valueOf(sizeOfPropertyBrush.getValue()));
+        PropertySize.setText(String.valueOf((int)sizeOfPropertyBrush.getValue()));
         for(Figure figure : figures){
             if(figure.isSelected)
-                figure.size = sizeOfPropertyBrush.getValue();
+                figure.sizeOfBrush = sizeOfPropertyBrush.getValue();
             graphicsContext.clearRect(0,0,widht,height);
             repaintCanvas();
         }
-        History.rememberCondition();
     }
 
     public void setParamFilling() {
@@ -328,7 +330,7 @@ public class Controller {
 
     public void setColorOfFillingParam() {
         for (Figure figure : figures){
-            if(figure.isSelected&figure.isFillingFigure){
+            if(figure.isSelected & figure.isFillingFigure){
                 figure.colorOfFilling = colorOfFillingParamPicker.getValue();
             }
             graphicsContext.clearRect(0,0,widht,height);
@@ -363,11 +365,61 @@ public class Controller {
         History.redo();
     }
 
-    public void getSizeFinal(MouseEvent event) {
+    public void getFinal() {
         History.rememberCondition();
     }
 
-    public void onScrollScaleFinal(MouseEvent event) {
-        History.rememberCondition();
+    public void upLayer() {
+        Figure rememberedFigure;
+        Figure movingFigure;
+        int i = 1;
+        List<Figure> selected = new ArrayList<>();
+        for (Figure figure : figures){
+            if(figure.isSelected)
+                selected.add(figure);
+        }
+        if(selected.size()!=figures.size()){
+            if(!selected.get(selected.size()-1).equals(figures.get(figures.size()-1))) {
+                rememberedFigure = figures.get(figures.indexOf(selected.get(selected.size() - 1)) + 1);
+                movingFigure = selected.get(selected.size() - 1);
+                figures.set(figures.indexOf(rememberedFigure), movingFigure);
+                figures.set(figures.indexOf(movingFigure), rememberedFigure);
+            }
+            for (;i!=selected.size();i++){
+                rememberedFigure = figures.get(figures.indexOf(selected.get(selected.size()-i))-1);
+                movingFigure = selected.get(i);
+                figures.set(figures.indexOf(rememberedFigure),movingFigure);
+                figures.set(figures.indexOf(movingFigure),rememberedFigure);
+            }
+            canvas.getGraphicsContext2D().clearRect(0,0,widht,height);
+            repaintCanvas();
+        }
+    }
+
+    public void DownLayer() {
+        Figure rememberedFigure;
+        Figure movingFigure;
+        int i = 1;
+        List<Figure> selected = new ArrayList<>();
+        for(Figure figure : figures){
+            if(figure.isSelected)
+                selected.add(figure);
+        }
+        if(selected.size()!=figures.size()){
+            if(!selected.get(0).equals(figures.get(0))){
+                rememberedFigure = figures.get(figures.indexOf(selected.get(0))-1);
+                movingFigure = selected.get(0);
+                figures.set(figures.indexOf(movingFigure),rememberedFigure);
+                figures.set(figures.indexOf(rememberedFigure),movingFigure);
+            }
+            for(;i!=selected.size();i++){
+                rememberedFigure = figures.get(figures.indexOf(selected.get(i))-1);
+                movingFigure = selected.get(i);
+                figures.set(figures.indexOf(movingFigure),rememberedFigure);
+                figures.set(figures.indexOf(rememberedFigure),movingFigure);
+            }
+            canvas.getGraphicsContext2D().clearRect(0,0,widht,height);
+            repaintCanvas();
+        }
     }
 }

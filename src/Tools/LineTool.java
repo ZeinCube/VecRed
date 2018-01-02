@@ -14,7 +14,6 @@ import static sample.Controller.widht;
 public class LineTool extends Tool {
     public LineTool(Canvas canvas) {
         super(canvas);
-        graphicsContext = canvas.getGraphicsContext2D();
         button = new Button();
         button.setPrefHeight(70);
         button.setPrefWidth(70);

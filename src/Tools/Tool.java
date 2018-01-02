@@ -20,6 +20,7 @@ public abstract class Tool {
 
     public Tool(Canvas canvas) {
         Tool.canvas = canvas;
+        graphicsContext = canvas.getGraphicsContext2D();
         Controller.toolList.add(this);
     }
 

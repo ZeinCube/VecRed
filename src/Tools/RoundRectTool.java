@@ -14,7 +14,6 @@ import static sample.Controller.widht;
 public class RoundRectTool extends Tool {
     public RoundRectTool(Canvas canvas) {
         super(canvas);
-        graphicsContext = canvas.getGraphicsContext2D();
         button = new Button();
         button.setPrefHeight(70);
         button.setPrefWidth(110);

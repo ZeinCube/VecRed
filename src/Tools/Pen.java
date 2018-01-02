@@ -16,7 +16,6 @@ public class Pen extends Tool {
     PolyLine curruntLine;
     public Pen(Canvas canvas) {
         super(canvas);
-        this.graphicsContext = canvas.getGraphicsContext2D();
         button = new Button();
         button.setPrefHeight(70);
         button.setPrefWidth(70);
