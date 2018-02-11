@@ -17,6 +17,10 @@ import javafx.scene.paint.Paint;
 import javafx.stage.FileChooser;
 
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,16 +56,12 @@ public class Controller {
 
     @FXML
     private Label brushSizeLabel;
-
     @FXML
     private Canvas canvas;
-
     @FXML
     private ToolBar toolBar;
-
     @FXML
     private ColorPicker colorPicker;
-
     @FXML
     private Slider brushSize;
 
@@ -77,6 +77,8 @@ public class Controller {
     public static Paint colorOfFilling = Color.BLACK;
     public static int height = Toolkit.getDefaultToolkit().getScreenSize().height;
     public static int widht = Toolkit.getDefaultToolkit().getScreenSize().width;
+    public static boolean isSaved = false;
+    public static String nameOfFile = "";
 
 
     public void onExit() {
@@ -186,20 +188,18 @@ public class Controller {
         directoryChooser.setTitle("Select Folder");
         directoryChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Vector image (*.vi)","*.vi"));
         directory = directoryChooser.showSaveDialog(Main.getStage());
-        ObjectOutputStream outputStream = null;
+        DataOutputStream outputStream = null;
         if(directory!=null) {
             try {
-                outputStream = new ObjectOutputStream(new FileOutputStream(directory));
+                outputStream = new DataOutputStream(new FileOutputStream(directory));
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            for (Figure figure : figures) {
                 try {
-                    outputStream.writeObject(figure);
+                    outputStream.writeUTF(SaveAndLoad.getFile());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
             try {
                 outputStream.flush();
                 outputStream.close();
@@ -216,10 +216,10 @@ public class Controller {
         directoryChooser.setTitle("Select Folder");
         directoryChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Vector image (*.vi)","*.vi"));
         directory = directoryChooser.showOpenDialog(Main.getStage());
-        ObjectInputStream inputStream = null;
+        DataInputStream inputStream = null;
         if(directory!=null) {
             try {
-                inputStream = new ObjectInputStream(new FileInputStream(directory));
+                inputStream = new DataInputStream(new FileInputStream(directory));
             } catch (IOException e) {
                 e.printStackTrace();
                 try {
@@ -228,15 +228,11 @@ public class Controller {
                 }
             }
             try {
-                figures.clear();
-                while(true) {
-                    figures.add((Figure) inputStream.readObject());
-                }
+                SaveAndLoad.loadFile(inputStream.readUTF(),false);
             } catch (EOFException ignored) {
-            } catch (IOException | ClassNotFoundException e) {
+            } catch (IOException | IllegalAccessException | InstantiationException e) {
                 e.printStackTrace();
-            }
-            finally {
+            } finally {
                 try {
                     inputStream.close();
                 } catch (IOException ignored) {
@@ -262,26 +258,43 @@ public class Controller {
         colorOfFilling = colorOfFillingPicker.getValue();
     }
 
-    public void copy(ActionEvent actionEvent) {
+    public void copy() {
+        StringBuilder str = new StringBuilder();
         for(Figure figure : figures){
             if(figure.isSelected){
-
+                str.append(figure.toString());
             }
+        }
+        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(str.toString()),null);
+    }
+
+    public void paste() throws IOException, UnsupportedFlavorException {
+        try {
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            DataFlavor data = DataFlavor.stringFlavor;
+            if (clipboard.isDataFlavorAvailable(data)) {
+                SaveAndLoad.loadFile(String.valueOf(clipboard.getData(data)),true);
+                History.rememberCondition();
+            }
+            } catch(IllegalAccessException e){
+                e.printStackTrace();
+            } catch(InstantiationException ignored){
         }
     }
 
-    public void paste(ActionEvent actionEvent) {
-
+    public void cut() {
+        StringBuilder str = new StringBuilder();
+        for(Figure figure : figures){
+            if(figure.isSelected){
+                str.append(figure.toString());
+            }
+        }
+        deleteSelectedShape();
+        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(str.toString()),null);
         History.rememberCondition();
-
     }
 
-    public void cut(ActionEvent actionEvent) {
-
-        History.rememberCondition();
-    }
-
-    public void deleteSelectedShape(ActionEvent actionEvent) {
+    public void deleteSelectedShape() {
         for(int i = 0;i<=figures.size()-1;i++){
             if(figures.get(i).isSelected) {
                 figures.remove(i);
@@ -393,6 +406,7 @@ public class Controller {
             }
             canvas.getGraphicsContext2D().clearRect(0,0,widht,height);
             repaintCanvas();
+            History.rememberCondition();
         }
     }
 
@@ -420,6 +434,7 @@ public class Controller {
             }
             canvas.getGraphicsContext2D().clearRect(0,0,widht,height);
             repaintCanvas();
+            History.rememberCondition();
         }
     }
 }

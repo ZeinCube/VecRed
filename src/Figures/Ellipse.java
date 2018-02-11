@@ -2,8 +2,13 @@ package Figures;
 
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import sample.Controller;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class Ellipse extends Figure {
 
@@ -50,5 +55,15 @@ public class Ellipse extends Figure {
         if(isSelected){
             drawSelection();
         }
+    }
+
+    public static Figure valueOf(String string) {
+        List<String> params = parseString(string);
+        return new Ellipse(new Point(Double.parseDouble(params.get(0)),Double.parseDouble(params.get(1))),new Point(Double.parseDouble(params.get(2)),Double.parseDouble(params.get(3))),Double.parseDouble(params.get(4)), Color.valueOf(params.get(5)),Color.valueOf(params.get(7)),Boolean.parseBoolean(params.get(6)));
+    }
+
+    @Override
+    public String toString() {
+        return "Ellipse " + start.toString() + ' ' + end.toString() + ' ' + sizeOfBrush + ' ' + colorOfStroke.toString() + ' ' + isFilled +' ' + colorOfFilling.toString() +'/';
     }
 }

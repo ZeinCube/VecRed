@@ -2,9 +2,12 @@ package Figures;
 
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import sample.Controller;
+
+import java.util.List;
 
 public class RoundRect extends Figure {
     double sizeOfArc;
@@ -54,5 +57,16 @@ public class RoundRect extends Figure {
         if(isSelected){
             drawSelection();
         }
+    }
+
+    public static Figure valueOf(String string) {
+        List<String> params = parseString(string);
+        return new RoundRect(new Point(Double.parseDouble(params.get(0)),Double.parseDouble(params.get(1))),new Point(Double.parseDouble(params.get(2)),Double.parseDouble(params.get(3))),Double.parseDouble(params.get(4)), Color.valueOf(params.get(5)),Color.valueOf(params.get(7)),Boolean.parseBoolean(params.get(6)));
+    }
+
+
+    @Override
+    public String toString() {
+        return "RoundR " + start.toString() + ' ' + end.toString() + ' ' + sizeOfBrush + ' ' + colorOfStroke.toString() + ' ' + isFilled + ' ' + colorOfFilling.toString()+'/';
     }
 }

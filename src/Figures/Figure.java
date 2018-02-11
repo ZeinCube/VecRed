@@ -6,6 +6,9 @@ import javafx.scene.paint.Paint;
 import sample.Controller;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public abstract class Figure implements Serializable {
     public boolean isFillingFigure;
@@ -15,6 +18,7 @@ public abstract class Figure implements Serializable {
     public double sizeOfBrush;
     public static GraphicsContext graphicsContext;
     public Point start , end;
+    LinkedList<Point> points = new LinkedList<>();
     public boolean isSelected;
     public static double xOffSet , yOffSet;
 
@@ -67,4 +71,22 @@ public abstract class Figure implements Serializable {
 
     public abstract void draw(GraphicsContext graphicsContext);
 
+    public static List<String> parseString(String string) {
+        List<String> params = new ArrayList<>();
+        StringBuilder param = new StringBuilder();
+        for (char c : string.toCharArray()) {
+            if (c != ' ') {
+                if(c!='[' && c!=']'&&c!=',')
+                param.append(c);
+            } else {
+                params.add(param.toString());
+                param = new StringBuilder();
+            }
+        }
+        params.add(param.toString());
+        return params;
+    }
+
+    @Override
+    public abstract String toString();
 }

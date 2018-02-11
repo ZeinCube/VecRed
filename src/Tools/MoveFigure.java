@@ -28,13 +28,14 @@ public class MoveFigure extends Tool {
         for (int i = 0; i< Controller.figures.size(); i++){
             if(Controller.figures.get(Controller.figures.size()-i-1).isContainPoint(starting)&&Controller.figures.get(Controller.figures.size()-i-1).isSelected) {
                 movingFigure = Controller.figures.get(Controller.figures.size()-i-1);
+                remXS = movingFigure.start.x;
+                remYS = movingFigure.start.y;
+                remXE = movingFigure.end.x;
+                remYE = movingFigure.end.y;
                 break;
             }
         }
-        remXS = movingFigure.start.x;
-        remYS = movingFigure.start.y;
-        remXE = movingFigure.end.x;
-        remYE = movingFigure.end.y;
+
     }
 
     @Override
@@ -49,6 +50,6 @@ public class MoveFigure extends Tool {
 
     @Override
     public void getOnMouseReleased(MouseEvent event) {
-
+        movingFigure = null;
     }
 }

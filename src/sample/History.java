@@ -9,7 +9,7 @@ import java.util.*;
 public class History {
 
     private static List<Condition> history = new ArrayList<>();
-    private static int currentCondition = 0;
+    public static int currentCondition = 0;
 
     public static void rememberCondition(){
         if(currentCondition!=history.size()-1) {

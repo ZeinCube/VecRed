@@ -8,11 +8,13 @@ import javafx.scene.shape.Polyline;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeLineJoin;
 import sample.Controller;
+
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 
 public class PolyLine extends Figure{
-    public LinkedList<Point> points = new LinkedList<>();
 
     public PolyLine(LinkedList<Point> points , Paint color,double size){
         isFillingFigure = false;
@@ -87,6 +89,21 @@ public class PolyLine extends Figure{
         if(isSelected){
             drawSelection();
         }
+    }
+
+    public static Figure valueOf(String string) {
+        LinkedList<Point> points = new LinkedList<>();
+        List<String> params = parseString(string);
+        int i = 0;
+        for(;!params.get(i).contains("x");i+=1 ){
+            points.add(new Point(Double.parseDouble(params.get(i)),Double.parseDouble(params.get(++i))));
+        }
+        return new PolyLine(points,Paint.valueOf(params.get(i)),Double.parseDouble(params.get(i+1)));
+    }
+
+    @Override
+    public String toString() {
+        return "PolyLine " + points + ' ' + colorOfStroke.toString() + ' ' + sizeOfBrush+'/';
     }
 
 }

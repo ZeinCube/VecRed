@@ -2,9 +2,12 @@ package Figures;
 
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.StrokeLineCap;
 import sample.Controller;
+
+import java.util.List;
 
 public class Line extends Figure {
     public Line(Point start,Point end, double size, Paint colorOfStroke) {
@@ -44,5 +47,16 @@ public class Line extends Figure {
         if(isSelected){
             drawSelection();
         }
+    }
+
+    public static Figure valueOf(String string) {
+        List<String> params = parseString(string);
+        return new Line(new Point(Double.parseDouble(params.get(0)),Double.parseDouble(params.get(1))),new Point(Double.parseDouble(params.get(2)),Double.parseDouble(params.get(3))),Double.parseDouble(params.get(4)), Color.valueOf(params.get(5)));
+    }
+
+
+    @Override
+    public String toString() {
+        return "Line " + start.toString() + ' ' + end.toString() + ' ' + sizeOfBrush + ' ' + colorOfStroke.toString() + '/';
     }
 }
