@@ -1,4 +1,5 @@
 package Tools;
+
 import Figures.Ellipse;
 import Figures.Figure;
 import Figures.Point;
@@ -10,7 +11,7 @@ import sample.Controller;
 import static sample.Controller.height;
 import static sample.Controller.widht;
 
-public class EllipseTool extends Tool{
+public class EllipseTool extends Tool {
     public EllipseTool(Canvas canvas) {
         super(canvas);
         button = new Button();
@@ -22,21 +23,21 @@ public class EllipseTool extends Tool{
 
     @Override
     public void getOnMousePressed(MouseEvent event) {
-        start = Figure.canvasToScreen(new Point(event.getX(),event.getY()));
+        start = Figure.canvasToScreen(new Point(event.getX(), event.getY()));
         end = null;
     }
 
     @Override
     public void getOnMouseDragged(MouseEvent event) {
-        graphicsContext.clearRect(0,0,widht,height);
+        graphicsContext.clearRect(0, 0, widht, height);
         Controller.repaintCanvas();
-        end = Figure.canvasToScreen(new Point(event.getX(),event.getY()));
-        new Ellipse(start,end,size, colorOfStroke,Controller.colorOfFilling,Controller.isFilling);
+        end = Figure.canvasToScreen(new Point(event.getX(), event.getY()));
+        new Ellipse(start, end, size, colorOfStroke, Controller.colorOfFilling, Controller.isFilling);
     }
 
     @Override
     public void getOnMouseReleased(MouseEvent event) {
-        if(end!=null) {
+        if (end != null) {
             Controller.addFigure(new Ellipse(start, end, size, colorOfStroke, Controller.colorOfFilling, Controller.isFilling));
             Controller.repaintCanvas();
         }

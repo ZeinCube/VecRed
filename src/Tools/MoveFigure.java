@@ -10,7 +10,7 @@ import sample.Controller;
 public class MoveFigure extends Tool {
     Figure movingFigure;
     Point starting;
-    double remXS,remYS,remXE,remYE;
+    double remXS, remYS, remXE, remYE;
 
     public MoveFigure(Canvas canvas) {
         super(canvas);
@@ -24,10 +24,10 @@ public class MoveFigure extends Tool {
 
     @Override
     public void getOnMousePressed(MouseEvent event) {
-        starting = new Point(event.getX(),event.getY());
-        for (int i = 0; i< Controller.figures.size(); i++){
-            if(Controller.figures.get(Controller.figures.size()-i-1).isContainPoint(starting)&&Controller.figures.get(Controller.figures.size()-i-1).isSelected) {
-                movingFigure = Controller.figures.get(Controller.figures.size()-i-1);
+        starting = new Point(event.getX(), event.getY());
+        for (int i = 0; i < Controller.figures.size(); i++) {
+            if (Controller.figures.get(Controller.figures.size() - i - 1).isContainPoint(starting) && Controller.figures.get(Controller.figures.size() - i - 1).isSelected) {
+                movingFigure = Controller.figures.get(Controller.figures.size() - i - 1);
                 remXS = movingFigure.start.x;
                 remYS = movingFigure.start.y;
                 remXE = movingFigure.end.x;
@@ -40,9 +40,9 @@ public class MoveFigure extends Tool {
 
     @Override
     public void getOnMouseDragged(MouseEvent event) {
-        if(movingFigure!=null) {
+        if (movingFigure != null) {
             movingFigure.start = new Point(remXS + (event.getX() - starting.x), remYS + (event.getY() - starting.y));
-            movingFigure.end = new Point(remXE + (event.getX() - starting.x),remYE +(event.getY() - starting.y));
+            movingFigure.end = new Point(remXE + (event.getX() - starting.x), remYE + (event.getY() - starting.y));
             graphicsContext.clearRect(0, 0, Controller.widht, Controller.height);
             Controller.repaintCanvas();
         }

@@ -2,8 +2,8 @@ package Figures;
 
 import java.io.Serializable;
 
-public class Point implements Serializable{
-   public double x , y;
+public class Point implements Serializable {
+    public double x, y;
 
     public Point(double x, double y) {
         this.x = x;
@@ -12,6 +12,6 @@ public class Point implements Serializable{
 
     @Override
     public String toString() {
-        return x+" "+y;
+        return x + " " + y;
     }
 }

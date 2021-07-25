@@ -22,23 +22,23 @@ public class LineTool extends Tool {
 
     @Override
     public void getOnMousePressed(MouseEvent event) {
-       start = Figure.canvasToScreen(new Point(event.getX(),event.getY()));
-       end = null;
+        start = Figure.canvasToScreen(new Point(event.getX(), event.getY()));
+        end = null;
     }
 
     @Override
     public void getOnMouseDragged(MouseEvent event) {
-        end = Figure.canvasToScreen(new Point(event.getX(),event.getY()));
-        graphicsContext.clearRect(0,0,widht,height);
+        end = Figure.canvasToScreen(new Point(event.getX(), event.getY()));
+        graphicsContext.clearRect(0, 0, widht, height);
         Controller.repaintCanvas();
-        new Line(start,end,size, colorOfStroke);
+        new Line(start, end, size, colorOfStroke);
     }
 
     @Override
     public void getOnMouseReleased(MouseEvent event) {
-        graphicsContext.clearRect(0,0,widht,height);
+        graphicsContext.clearRect(0, 0, widht, height);
         Controller.repaintCanvas();
-        if(end!=null)
-        Controller.addFigure(new Line(start,end,size, colorOfStroke));
+        if (end != null)
+            Controller.addFigure(new Line(start, end, size, colorOfStroke));
     }
 }

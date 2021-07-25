@@ -11,7 +11,7 @@ import sample.Controller;
 import static sample.Controller.height;
 import static sample.Controller.widht;
 
-public class RectTool extends Tool{
+public class RectTool extends Tool {
     public RectTool(Canvas canvas) {
         super(canvas);
         button = new Button();
@@ -23,21 +23,21 @@ public class RectTool extends Tool{
 
     @Override
     public void getOnMousePressed(MouseEvent event) {
-        start = Figure.canvasToScreen(new Point(event.getX(),event.getY()));
+        start = Figure.canvasToScreen(new Point(event.getX(), event.getY()));
         end = null;
     }
 
     @Override
     public void getOnMouseDragged(MouseEvent event) {
-        graphicsContext.clearRect(0,0,widht,height);
-        end = Figure.canvasToScreen(new Point(event.getX(),event.getY()));
+        graphicsContext.clearRect(0, 0, widht, height);
+        end = Figure.canvasToScreen(new Point(event.getX(), event.getY()));
         Controller.repaintCanvas();
-        new Rect(start,end,size, colorOfStroke,Controller.colorOfFilling,Controller.isFilling);
+        new Rect(start, end, size, colorOfStroke, Controller.colorOfFilling, Controller.isFilling);
     }
 
     @Override
     public void getOnMouseReleased(MouseEvent event) {
-        if(end!=null) {
+        if (end != null) {
             Controller.addFigure(new Rect(start, end, size, colorOfStroke, Controller.colorOfFilling, Controller.isFilling));
             Controller.repaintCanvas();
         }
